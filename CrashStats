@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrashStats Kenya</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #101820;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background: #19242d;
+      padding: 20px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #34434d;
+    }
+    header h2 { margin: 0; color: #ff4c68; }
+    .tag { color: #aab9c5; font-size: 12px; }
+    main { padding: 16px; max-width: 650px; margin: auto; }
+    .panel {
+      background: #1b2934;
+      border: 1px solid #344652;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .game {
+      text-align: center;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: radial-gradient(ellipse, #253e4a, #111b24);
+    }
+    .multiplier {
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff526b;
+      margin: 14px 0;
+    }
+    .plane { font-size: 42px; }
+    button {
+      background: #ff4c68;
+      color: white;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.secondary { background: #344652; }
+    .muted { color: #aab9c5; font-size: 13px; }
+    .history {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill {
+      background: #293b47;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #75e2a0;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 7px;
+      border: 1px solid #425561;
+      background: #101820;
+      color: white;
+      margin: 8px 0 12px;
+    }
+    footer { text-align: center; padding: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h2>✈ CrashStats</h2>
+      <div class="tag">KENYA • CRASH GAME DEMO</div>
+    </div>
+    <span>🇰🇪</span>
+  </header>
+
+  <main>
+    <section class="panel game">
+      <div class="muted">DEMO MODE • VIRTUAL CREDITS ONLY</div>
+      <div class="plane">✈️</div>
+      <div class="multiplier" id="multiplier">1.00x</div>
+      <div id="status">Ready for demo round</div>
+      <p class="muted">Results are simulated and are not predictions.</p>
+      <button id="start">Start Demo Round</button>
+    </section>
+
+    <section class="panel">
+      <h3>Recent Demo Results</h3>
+      <div class="history" id="history">
+        <span class="pill">2.14x</span>
+        <span class="pill">1.36x</span>
+        <span class="pill">3.08x</span>
+        <span class="pill">1.72x</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Player Account</h3>
+      <p class="muted">Demo interface only. No account or payment is created.</p>
+      <label for="username">Display name</label>
+      <input id="username" placeholder="Enter a display name">
+      <button class="secondary" id="saveName">Save Display Name</button>
+      <p id="welcome" class="muted"></p>
+    </section>
+
+    <section class="panel">
+      <h3>Deposits & Withdrawals</h3>
+      <p class="muted">Disabled. This demo does not accept money or process payments.</p>
+      <button class="secondary" disabled>Deposits Disabled</button>
+      <button class="secondary" disabled>Withdrawals Disabled</button>
+    </section>
+
+    <section class="panel">
+      <h3>Administration</h3>
+      <p class="muted">Admin access requires a secure server and authentication. No admin login is implemented in this demo.</p>
+    </section>
+  </main>
+
+  <footer class="muted">CrashStats Kenya • Demo version</footer>
+
+  <script>
+    const multiplier = document.getElementById("multiplier");
+    const statusText = document.getElementById("status");
+    const startButton = document.getElementById("start");
+    const historyBox = document.getElementById("history");
+    let running = false;
+
+    startButton.addEventListener("click", () => {
+      if (running) return;
+      running = true;
+      startButton.disabled = true;
+      statusText.textContent = "Plane flying...";
+      multiplier.textContent = "1.00x";
+
+      const crashAt = 1 + Math.random() * 4;
+      const began = Date.now();
+
+      const timer = setInterval(() => {
+        const elapsed = (Date.now() - began) / 1000;
+        const value = 1 + elapsed * 0.35;
+
+        if (value >= crashAt) {
+          clearInterval(timer);
+          multiplier.textContent = crashAt.toFixed(2) + "x";
+          statusText.textContent = "Demo round ended";
+          const chip = document.createElement("span");
+          chip.className = "pill";
+          chip.textContent = crashAt.toFixed(2) + "x";
+          historyBox.prepend(chip);
+          while (historyBox.children.length > 8) {
+            historyBox.lastElementChild.remove();
+          }
+          running = false;
+          startButton.disabled = false;
+          startButton.textContent = "Start Another Round";
+        } else {
+          multiplier.textContent = value.toFixed(2) + "x";
+        }
+      }, 100);
+    });
+
+    document.getElementById("saveName").addEventListener("click", () => {
+      const name = document.getElementById("username").value.trim();
+      document.getElementById("welcome").textContent =
+        name ? "Welcome, " + name + "! (demo only)" : "Please enter a display name.";
+    });
+  </script>
+</body>
+</html>
