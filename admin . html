@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FlyBet Admin</title>
+<style>
+body{background:#070a10;color:#fff;font-family:system-ui;padding:12px}
+*{box-sizing:border-box}
+.card{background:#131a26;border:1px solid #222;border-radius:12px;padding:14px;margin:10px 0}
+input{width:100%;padding:10px;background:#000;border:1px solid #333;border-radius:8px;color:#fff;margin:6px 0}
+button{padding:10px 14px;border:0;border-radius:8px;font-weight:800;cursor:pointer}
+.btn-green{background:#00c853;color:#000}
+.btn-red{background:#ff3344;color:#fff}
+.btn-gold{background:#ffab00;color:#000}
+h2{color:#00ff88}
+.stat{display:inline-block;background:#1a2332;padding:8px 14px;border-radius:20px;margin:4px;border:1px solid #00c85344}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #222;padding:8px;text-align:left;font-size:12px}
+th{background:#1a2332;color:#00ff88}
+#loginBox{max-width:360px;margin:60px auto}
+</style></head><body>
+<div id="loginBox" class="card">
+<h2>🔐 FlyBet Admin Login</h2>
+<input id="adminPass" type="password" placeholder="Admin Password">
+<button class="btn-green" style="width:100%" onclick="adminLogin()">Login</button>
+<div style="font-size:11px;color:#888;margin-top:8px">Default pass: FlyBet2024! - Change after login!</div>
+</div>
+
+<div id="adminPanel" style="display:none">
+<header style="display:flex;justify-content:space-between;align-items:center"><h2>✈️ FlyBet Admin</h2><button class="btn-red" onclick="location.reload()">Logout</button></header>
+
+<div class="card"><h3>📊 Live Stats</h3>
+<span class="stat">Rounds: <b id="sRounds">125</b></span>
+<span class="stat">Players Today: <b id="sPlayers">12</b></span>
+<span class="stat">Total Profit: <b id="sProfit">KES 2,340</b></span>
+<span class="stat">Current Mult: <b id="sMult">1.00x</b></span>
+</div>
+
+<div class="card"><h3>🎮 Control Crash</h3>
+<input id="nextCrash" type="number" step="0.1" placeholder="Set next crash e.g 1.5">
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn-gold" onclick="setCrash()">Set Next Crash</button>
+<button class="btn-green" onclick="setCrashRandom()">Random (Fair)</button>
+</div>
+<div id="crashStatus" style="font-size:12px;color:#0f8;margin-top:6px"></div>
+</div>
+
+<div class="card"><h3>👥 Players / Balance Control</h3>
+<input id="pPhone" placeholder="Phone e.g 0712345678">
+<input id="pBal" type="number" placeholder="New Balance KES">
+<button class="btn-green" onclick="updateBal()">Update Balance</button>
+<button class="btn-red" onclick="banPlayer()">Ban</button>
+<div id="pStatus" style="font-size:12px;margin-top:6px;color:#0f8"></div>
+<table><thead><tr><th>Phone</th><th>Bal</th><th>Bets</th><th>Profit</th></tr></thead><tbody id="playerTable"><tr><td>0712***678</td><td>1000</td><td>12</td><td>+340</td></tr><tr><td>0721***234</td><td>500</td><td>5</td><td>-120</td></tr></tbody></table>
+</div>
+
+<div class="card"><h3>💚 M-Pesa Transactions</h3>
+<table><thead><tr><th>Time</th><th>Phone</th><th>Amount</th><th>Status</th></tr></thead><tbody id="mpesaTable"><tr><td>14:32</td><td>0712***</td><td>500</td><td style="color:#0f8">Success</td></tr><tr><td>14:28</td><td>0722***</td><td>1000</td><td style="color:#0f8">Success</td></tr></tbody></table>
+</div>
+
+<div class="card"><h3>⚙️ Settings</h3>
+<input id="newPass" placeholder="New Admin Password">
+<button class="btn-gold" onclick="changePass()">Change Password</button>
+<div style="margin-top:10px">
+<button class="btn-green" onclick="exportData()">Export Players CSV</button>
+<button class="btn-red" onclick="resetGame()">Reset Game History</button>
+</div>
+</div>
+</div>
+
+<script>
+let adminAuth=false;
+function adminLogin(){
+ let p=document.getElementById('adminPass').value;
+ let saved=localStorage.getItem('flybet_admin_pass')||'FlyBet2024!';
+ if(p===saved){adminAuth=true;document.getElementById('loginBox').style.display='none';document.getElementById('adminPanel').style.display='block';loadStats();}
+ else alert('Wrong password!');
+}
+function loadStats(){setInterval(()=>{document.getElementById('sMult').innerText=(1+Math.random()*5).toFixed(2)+'x';},800);}
+function setCrash(){let c=document.getElementById('nextCrash').value;localStorage.setItem('flybet_next_crash',c);document.getElementById('crashStatus').innerText='✓ Next crash set to '+c+'x';}
+function setCrashRandom(){localStorage.removeItem('flybet_next_crash');document.getElementById('crashStatus').innerText='✓ Set to Random Fair Mode';}
+function updateBal(){let ph=document.getElementById('pPhone').value,bal=document.getElementById('pBal').value;if(!ph||!bal)return alert('Enter phone & bal');localStorage.setItem('bal_'+ph,bal);document.getElementById('pStatus').innerText='✓ '+ph+' balance set to '+bal;}
+function banPlayer(){let ph=document.getElementById('pPhone').value;localStorage.setItem('ban_'+ph,'1');document.getElementById('pStatus').innerText='✗ '+ph+' BANNED';}
+function changePass(){let np=document.getElementById('newPass').value;if(np.length<6)return alert('Min 6 chars');localStorage.setItem('flybet_admin_pass',np);alert('Password changed to '+np);}
+function exportData(){alert('CSV Export: Coming with backend DB!');}
+function resetGame(){if(confirm('Reset history?')){localStorage.clear();alert('Reset done!');}}
+</script></body></html>
