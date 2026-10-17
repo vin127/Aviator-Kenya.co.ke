@@ -1,23 +1,35 @@
 
 const express = require("express");
-const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10kb" }));
+
+app.get("/", (req, res) => {
+  res.json({
+    service: "CrashStats API",
+    status: "running",
+    mode: "backend starter",
+    message: "Server is reachable"
+  });
+});
 
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok", app: "CrashStats" });
+  res.status(200).json({ ok: true });
 });
 
-app.use(express.static(__dirname));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.use((req, res) => {
+  res.status(404).json({
+    error: "Endpoint not found"
+  });
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`CrashStats running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+
+if (require.main === module) {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`CrashStats API listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;
