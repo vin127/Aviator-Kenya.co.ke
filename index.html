@@ -1,62 +1,62 @@
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FlyBet Kenya - Paarisha Pesa Angani!</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0e13;color:#fff;font-family:-apple-system,sans-serif;padding:8px}
-header{background:linear-gradient(90deg,#0d1f12,#1a1f2b);padding:12px 16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;border:1px solid #00c85355}
-.logo{color:#00ff88;font-weight:900;font-size:20px}
-.logo span{color:#ffab00}
-.bal-box{background:#000;border:1px solid #00c853;padding:6px 14px;border-radius:20px;font-weight:700;color:#00ff88}
-.game-area{background:radial-gradient(ellipse at center,#151a24 0%,#0d1117 100%);border:1px solid #222;border-radius:16px;padding:14px;margin-top:10px;position:relative;overflow:hidden;min-height:340px}
-#plane{font-size:40px;position:absolute;left:20px;bottom:80px;z-index:2;transition:all 0.1s}
-#multiplier{font-size:72px;font-weight:900;text-align:center;margin-top:70px;text-shadow:0 0 40px #00ff88}
-#status{text-align:center;margin:10px 0;font-size:13px;color:#aaa;min-height:18px}
-#historyBar{display:flex;gap:6px;overflow-x:auto;padding:10px;background:#11151c;border-radius:10px;margin-top:10px;border:1px solid #222}
-.hist{padding:4px 10px;border-radius:15px;font-size:12px;font-weight:700;white-space:nowrap}
-.hist-low{background:#2a1a1a;color:#ff5252}
-.hist-mid{background:#2a2410;color:#ffb300}
-.hist-high{background:#0a2a1a;color:#00e676}
-#betPanel{background:#171b21;border:1px solid #333;border-radius:14px;padding:14px;margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.bet-box{background:#0f1318;border:1px solid #2a2f3a;border-radius:10px;padding:10px}
-.bet-box h4{font-size:12px;color:#00ff88;margin-bottom:6px;text-align:center;font-weight:800}
-.bet-input{width:100%;padding:10px;border-radius:8px;background:#000;color:#fff;border:1px solid #333;text-align:center;font-weight:700;font-size:16px}
-.bet-btn{width:100%;padding:12px;border:0;border-radius:9px;font-weight:900;margin-top:8px;cursor:pointer;font-size:14px}
-.btn-bet{background:linear-gradient(90deg,#00c853,#00e676);color:#000}
-.btn-cash{background:linear-gradient(90deg,#ffab00,#ffd740);color:#000;animation:pulse 0.7s infinite}
-.btn-wait{background:#333;color:#888}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
-.action-row{display:flex;gap:10px;margin-top:10px}
-.act-btn{flex:1;padding:13px;border-radius:10px;border:1px solid #333;background:#1a1f2b;color:#fff;font-weight:700}
-.mpesa-btn{background:linear-gradient(90deg,#00b14f,#00e676)!important;color:#000!important;border:0!important;font-weight:900}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
-.modal-box{background:#1a1f2b;border:1px solid #333;border-radius:16px;padding:20px;width:100%;max-width:340px}
-.modal-box input{width:100%;padding:12px;margin:8px 0;border-radius:8px;background:#000;color:#fff;border:1px solid #333}
-.modal-box button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:0;font-weight:800}
-.tagline{font-size:10px;color:#ffab00;letter-spacing:1px}
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FlyBet Kenya - Aviator</title><style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:#070a10;color:#fff;overflow-x:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#0d121f;border-bottom:1px solid #1a2332}
+.logo{font-weight:900;color:#00ff88;font-size:14px}
+.btn{padding:8px 14px;border-radius:8px;border:0;font-weight:800;cursor:pointer}
+.btn-g{background:#00c853;color:#000}.btn-y{background:#ffab00;color:#000}
+.game{height:320px;background:radial-gradient(#101a2e,#070a10);position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #1a2332;overflow:hidden}
+.plane{font-size:48px;position:absolute;left:10%;transition:all 0.1s}
+.mult{font-size:52px;font-weight:900;color:#00ff88}
+.crash{position:absolute;inset:0;background:#ff0a2e88;display:none;align-items:center;justify-content:center;font-size:32px;font-weight:900;z-index:5}
+.bets{padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:#131a26;border:1px solid #222;border-radius:12px;padding:12px}
+.card input{width:100%;padding:12px;background:#000;border:1px solid #333;border-radius:8px;color:#fff;margin:6px 0}
+.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;z-index:20;padding:14px}
+.modalBox{background:#131a26;border:1px solid #333;border-radius:14px;padding:18px;width:100%;max-width:360px}
+.tab{display:flex;gap:8px;margin-bottom:12px}
+.tab div{flex:1;padding:10px;text-align:center;border-radius:8px;background:#1a2332;cursor:pointer}
+.tab .active{background:#00c853;color:#000;font-weight:800}
+.h{font-size:12px;color:#888;margin-top:6px}
 </style></head><body>
-<header><div><div class="logo">✈️ FlyBet <span>Kenya</span></div><div class="tagline">PAARISHA PESA ANGANI!</div></div><div style="text-align:right"><div class="bal-box">KES <span id="bal">1000</span></div><div style="font-size:11px;color:#00ff88" id="ub">Guest • Demo</div></div></header>
-<div id="historyBar"></div>
-<div class="game-area"><div id="plane">✈️</div><div id="multiplier">1.00x</div><div id="status">Place bet!</div><canvas id="cv" style="width:100%;height:80px;margin-top:20px;opacity:0.3"></canvas></div>
-<div id="betPanel">
-<div class="bet-box"><h4>FLY BET 1</h4><input id="bet1" class="bet-input" type="number" value="100"><button id="btn1" class="bet-btn btn-bet" onclick="placeBet(1)">BET 100</button><div style="text-align:center;font-size:11px;margin-top:5px;color:#888" id="win1"></div></div>
-<div class="bet-box"><h4>FLY BET 2</h4><input id="bet2" class="bet-input" type="number" value="200"><button id="btn2" class="bet-btn btn-bet" onclick="placeBet(2)">BET 200</button><div style="text-align:center;font-size:11px;margin-top:5px;color:#888" id="win2"></div></div>
+<div class="top"><div class="logo">✈️ FLYBET</div><div><span id="balText">KES 0</span> <button class="btn btn-g" onclick="openDeposit()">Deposit</button> <button class="btn btn-y" onclick="openAuth()">Login</button> <button id="logoutBtn" style="display:none" class="btn" onclick="logout()">Logout</button></div></div>
+<div class="game" id="gameArea"><div class="mult" id="mult">1.00x</div><div class="plane" id="plane">✈️</div><div class="crash" id="crashBox">💥 CRASHED <span id="crashMult"></span></div></div>
+<div class="bets">
+<div class="card"><h3>Bet 1 - Min 50</h3><input id="bet1" type="number" value="50" min="50"><button id="b1Btn" class="btn btn-g" style="width:100%;padding:12px" onclick="placeBet(1)">BET 50</button><div class="h">Auto: <input id="auto1" type="number" value="2.0" style="width:60px;padding:4px"></div></div>
+<div class="card"><h3>Bet 2 - Min 50</h3><input id="bet2" type="number" value="50" min="50"><button id="b2Btn" class="btn btn-g" style="width:100%;padding:12px" onclick="placeBet(2)">BET 50</button><div class="h">Auto: <input id="auto2" type="number" value="2.0" style="width:60px;padding:4px"></div></div>
 </div>
-<div class="action-row"><button class="act-btn" onclick="openModal('login')">👤 Login</button><button class="act-btn mpesa-btn" onclick="openModal('mpesa')">💚 M-Pesa</button></div>
-<div style="background:#11151c;border-radius:10px;padding:10px;margin-top:10px;border:1px solid #222"><h3 style="font-size:14px;color:#00ff88">Live - Round #<span id="rn">125</span> • FlyBet Kenya</h3><div id="liveBets" style="font-size:12px;color:#aaa">12 players online • Bets placed</div></div>
-<div id="loginModal" class="modal"><div class="modal-box"><h3>FlyBet Kenya Login</h3><input id="phone" placeholder="Phone 07XX XXX XXX"><input id="pass" type="password" placeholder="PIN"><button style="background:#00c853;color:#000" onclick="login()">Login</button><button style="background:#333;color:#fff" onclick="closeModals()">Close</button></div></div>
-<div id="mpesaModal" class="modal"><div class="modal-box"><h3>💚 FlyBet M-Pesa Deposit</h3><input id="mPhone" placeholder="07XX XXX XXX"><input id="mAmt" type="number" placeholder="Amount KES"><button style="background:#00c853;color:#000" onclick="mpesaDep()">Deposit</button><button style="background:#333;color:#fff" onclick="closeModals()">Cancel</button><div id="mStatus" style="font-size:12px;margin-top:8px;color:#0f8"></div></div></div>
+<div class="card" style="margin:10px"><h3>History</h3><div id="history" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div></div>
+
+<div class="modal" id="authModal"><div class="modalBox">
+<div class="tab"><div id="tabLogin" class="active" onclick="switchTab('login')">Login</div><div id="tabSignup" onclick="switchTab('signup')">Signup</div></div>
+<div id="loginPane"><input id="lPhone" placeholder="Phone 0712..."><input id="lPass" type="password" placeholder="Password"><button class="btn btn-g" style="width:100%;margin-top:8px" onclick="doLogin()">LOGIN</button></div>
+<div id="signupPane" style="display:none"><input id="sPhone" placeholder="Phone 0712..."><input id="sPass" type="password" placeholder="Password"><input id="sConfirm" type="password" placeholder="Confirm Password"><button class="btn btn-y" style="width:100%;margin-top:8px" onclick="doSignup()">CREATE - GET 50 BONUS</button></div>
+<button class="btn" style="width:100%;margin-top:8px;background:#222;color:#fff" onclick="closeAuth()">Close</button>
+</div></div>
+
+<div class="modal" id="depModal"><div class="modalBox">
+<h3>Deposit - Min KES 100</h3>
+<input id="depAmt" type="number" placeholder="Amount min 100" min="100" value="100" style="width:100%;padding:12px;background:#000;border:1px solid #333;border-radius:8px;color:#fff;margin-top:8px">
+<button class="btn btn-g" style="width:100%;margin-top:8px;padding:12px" onclick="doDeposit()">DEPOSIT VIA M-PESA</button>
+<div class="h">Minimum deposit KES 100. Demo adds to balance. Connect Daraja for real STK.</div>
+<button class="btn" style="width:100%;margin-top:8px;background:#222;color:#fff" onclick="closeDeposit()">Close</button>
+</div></div>
+
 <script>
-let balance=1000,currentMult=1,gameState='waiting',roundId=125,history=[{crash:2.34},{crash:1.12},{crash:8.5},{crash:1.45},{crash:15.2}],bets={1:null,2:null},cashed={1:false,2:false},timer=null,roundTimer=null;
-const balEl=document.getElementById('bal'),multEl=document.getElementById('multiplier'),statusEl=document.getElementById('status'),planeEl=document.getElementById('plane'),histBar=document.getElementById('historyBar'),rnEl=document.getElementById('rn');
-function ub(){balEl.innerText=balance}
-function genCrash(){let r=Math.random();if(r<0.48)return 1+Math.random()*1.15;if(r<0.82)return 2+Math.random()*5;if(r<0.94)return 7+Math.random()*13;return 20+Math.random()*80;}
-function renderHist(){histBar.innerHTML='';history.slice(0,18).forEach(h=>{let s=document.createElement('span');s.className='hist '+(h.crash<2?'hist-low':h.crash<10?'hist-mid':'hist-high');s.innerText=h.crash.toFixed(2)+'x';histBar.appendChild(s);});}
-function startRound(){gameState='flying';currentMult=1;cashed={1:false,2:false};roundId++;rnEl.innerText=roundId;let crash=genCrash();history.unshift({crash});renderHist();statusEl.innerText=`Round #${roundId} • FLYING!`;let start=Date.now();clearInterval(timer);timer=setInterval(()=>{let elapsed=(Date.now()-start)/1000;currentMult=Math.pow(1.09,elapsed*2.6);if(currentMult>=crash){currentMult=crash;endRound(true);return;}multEl.innerText=currentMult.toFixed(2)+'x';multEl.style.color=currentMult<2?'#fff':currentMult<10?'#ffb300':'#00ff88';let pct=Math.min(currentMult/crash,1);planeEl.style.left=(20+pct*(window.innerWidth-110))+'px';planeEl.style.bottom=(80+pct*160)+'px';[1,2].forEach(i=>{if(bets[i]&&!cashed[i]){let btn=document.getElementById('btn'+i);btn.innerText=`CASHOUT ${(bets[i].amt*currentMult).toFixed(0)}`;}});},45);}
-function endRound(crashed){clearInterval(timer);if(crashed){multEl.innerText=currentMult.toFixed(2)+'x CRASHED';multEl.style.color='#ff3344';statusEl.innerText=`Crashed at ${currentMult.toFixed(2)}x`;planeEl.style.left='20px';planeEl.style.bottom='80px';[1,2].forEach(i=>{if(bets[i]&&!cashed[i]){document.getElementById('win'+i).innerText=`Lost ${bets[i].amt}`;let btn=document.getElementById('btn'+i);btn.className='bet-btn btn-bet';btn.innerText=`BET ${document.getElementById('bet'+i).value}`;}});bets={1:null,2:null};gameState='waiting';let c=5;statusEl.innerText=`Next flight in ${c}s...`;clearInterval(roundTimer);roundTimer=setInterval(()=>{c--;statusEl.innerText=`Next flight in ${c}s...`;if(c<=0){clearInterval(roundTimer);startRound();}},1000);}}
-function placeBet(n){let amt=Number(document.getElementById('bet'+n).value);if(amt<10){alert('Min 10 KES');return;}if(gameState==='flying'&&!bets[n]){alert('Flight left! Wait next round');return;}if(balance<amt){alert('Low balance - Add M-Pesa');openModal('mpesa');return;}if(bets[n]){if(cashed[n]||gameState!=='flying')return;cashed[n]=true;let win=amt*currentMult;balance+=win;ub();document.getElementById('win'+n).innerText=`Won ${win.toFixed(0)} at ${currentMult.toFixed(2)}x`;let btn=document.getElementById('btn'+n);btn.className='bet-btn btn-wait';btn.innerText=`Cashed ${win.toFixed(0)}`;return;}balance-=amt;ub();bets[n]={amt};let btn=document.getElementById('btn'+n);if(gameState==='flying'){btn.className='bet-btn btn-cash';btn.innerText=`CASHOUT ${(amt*currentMult).toFixed(0)}`;}else{btn.className='bet-btn btn-wait';btn.innerText=`BET PLACED ${amt}`;}}
-function openModal(t){document.getElementById(t+'Modal').style.display='flex';}
-function closeModals(){document.querySelectorAll('.modal').forEach(m=>m.style.display='none');}
-function login(){let p=document.getElementById('phone').value;if(p.length<9){alert('Enter phone');return;}localStorage.setItem('phone',p);document.getElementById('ub').innerText=p;closeModals();document.getElementById('mPhone').value=p;}
-function mpesaDep(){let ph=document.getElementById('mPhone').value,amt=Number(document.getElementById('mAmt').value);let st=document.getElementById('mStatus');if(amt<10){st.innerText='Min 10';return;}st.innerText='Sending STK to '+ph+'...';setTimeout(()=>{balance+=amt;ub();st.innerText=`✓ KES ${amt} added to FlyBet!`;setTimeout(closeModals,1200);},1500);}
-renderHist();ub();statusEl.innerText='Place bet - Taking off in 3s!';setTimeout(()=>{startRound();},3000);
+let mult=1,crashed=false,bets=[null,null],balance=0,curUser=null,history=[];
+function $(id){return document.getElementById(id)}
+function openAuth(){$('authModal').style.display='flex'}function closeAuth(){$('authModal').style.display='none'}
+function switchTab(t){if(t==='login'){$('loginPane').style.display='block';$('signupPane').style.display='none';$('tabLogin').classList.add('active');$('tabSignup').classList.remove('active')}else{$('loginPane').style.display='none';$('signupPane').style.display='block';$('tabLogin').classList.remove('active');$('tabSignup').classList.add('active')}}
+function openDeposit(){if(!curUser)return openAuth();$('depModal').style.display='flex'}function closeDeposit(){$('depModal').style.display='none'}
+function doDeposit(){let a=parseFloat($('depAmt').value);if(isNaN(a)||a<100)return alert('Minimum deposit is KES 100');balance+=a;updateBal();closeDeposit();alert('Deposited KES '+a+' added!')}
+function doSignup(){let ph=$('sPhone').value.trim(),p=$('sPass').value,c=$('sConfirm').value;if(ph.length<10)return alert('Enter valid phone');if(p.length<4)return alert('Password min 4');if(p!==c)return alert('Passwords no match');let users=JSON.parse(localStorage.getItem('fly_users')||'{}');if(users[ph])return alert('User exists, login');users[ph]={pass:p,bal:50};localStorage.setItem('fly_users',JSON.stringify(users));alert('Account created! 50 bonus added. Now login');switchTab('login');$('lPhone').value=ph}
+function doLogin(){let ph=$('lPhone').value.trim(),p=$('lPass').value;let users=JSON.parse(localStorage.getItem('fly_users')||'{}');if(!users[ph])return alert('No account, signup first');if(users[ph].pass!==p)return alert('Wrong password');curUser=ph;balance=users[ph].bal;localStorage.setItem('fly_cur',ph);updateBal();closeAuth();$('logoutBtn').style.display='inline-block';alert('Welcome '+ph)}
+function logout(){localStorage.removeItem('fly_cur');curUser=null;balance=0;updateBal();$('logoutBtn').style.display='none'}
+function updateBal(){$('balText').innerText='KES '+balance;if(curUser){let users=JSON.parse(localStorage.getItem('fly_users')||'{}');if(users[curUser]){users[curUser].bal=balance;localStorage.setItem('fly_users',JSON.stringify(users))}}}
+function placeBet(n){if(!curUser)return openAuth();let amt=parseFloat((n===1?$('bet1').value:$('bet2').value));if(isNaN(amt)||amt<50)return alert('Minimum bet is KES 50');if(amt>balance)return alert('Low balance - Deposit min KES 100');if(bets[n-1])return cashout(n);balance-=amt;updateBal();bets[n-1]={amt,active:true};$('b'+n+'Btn').innerText='CASHOUT';$('b'+n+'Btn').style.background='#ffab00';}
+function cashout(n){if(!bets[n-1]||!bets[n-1].active)return;let win=bets[n-1].amt*mult;balance+=win;updateBal();bets[n-1]=null;$('b'+n+'Btn').innerText='BET '+(n===1?$('bet1').value:$('bet2').value);$('b'+n+'Btn').style.background='#00c853';}
+function addHist(m){history.unshift(m);if(history.length>20)history.pop();$('history').innerHTML=history.map(x=>`<span style="padding:4px 8px;border-radius:12px;background:${x<2?'#ff3344':x<10?'#ffab00':'#00c853'};color:${x<2?'#fff':'#000'};font-size:12px;font-weight:800">${x.toFixed(2)}x</span>`).join('')}
+let crashPoint=2;
+function startRound(){crashed=false;mult=1;let custom=localStorage.getItem('flybet_next_crash');if(custom){crashPoint=parseFloat(custom);localStorage.removeItem('flybet_next_crash');}else{crashPoint=Math.random()<0.05?50+Math.random()*100:Math.random()<0.3?1+Math.random():1.5+Math.random()*5;} $('crashBox').style.display='none'; let int=setInterval(()=>{if(crashed){clearInterval(int);return} mult+=0.01+mult*0.01; $('mult').innerText=mult.toFixed(2)+'x'; $('plane').style.left=(10+mult*3)+'%'; $('plane').style.bottom=(20+mult*2)+'%'; bets.forEach((b,i)=>{if(b&&b.active){let auto=parseFloat((i===0?$('auto1').value:$('auto2').value));if(mult>=auto)cashout(i+1)}}); if(mult>=crashPoint){crashed=true;$('crashMult').innerText=mult.toFixed(2)+'x';$('crashBox').style.display='flex';addHist(mult);bets=[null,null];[1,2].forEach(n=>{$('b'+n+'Btn').innerText='BET '+$('bet'+n).value;$('b'+n+'Btn').style.background='#00c853'});clearInterval(int);setTimeout(startRound,3000)}},80)}
+window.onload=()=>{let c=localStorage.getItem('fly_cur');if(c){let users=JSON.parse(localStorage.getItem('fly_users')||'{}');if(users[c]){curUser=c;balance=users[c].bal;updateBal();$('logoutBtn').style.display='inline-block'}};startRound()}
 </script></body></html>
