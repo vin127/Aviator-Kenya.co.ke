@@ -3,73 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLY BET - FLYBET.CO.KE</title>
+<title>FlyBet Kenya - Aviator</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
-body{background:#10131a;color:#fff}
-.topbar{background:#171a24;display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px solid #222}
-.logo{color:#ffcc00;font-weight:900;font-size:18px;display:flex;align-items:center;gap:4px}
-.balance{color:#00e676;font-weight:900;font-size:18px}
-.btn-join{background:#ffcc00;color:#000;border:0;padding:8px 18px;border-radius:6px;font-weight:900;cursor:pointer}
-.btn-login{background:transparent;color:#fff;border:0;padding:8px 12px;font-weight:700}
-.history{display:flex;gap:12px;overflow-x:auto;padding:8px 10px;background:#171a24;white-space:nowrap;scrollbar-width:none}
-.history span{font-weight:700;font-size:16px}
-.history .blue{color:#29b6f6}.history .purple{color:#ab47bc}
-.game-area{background:#000;height:52vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;border-radius:16px;margin:10px;overflow:hidden}
-#multi{font-size:70px;font-weight:900}
-#plane{font-size:36px;position:absolute;left:30%;top:62%;transition:0.1s}
-.bet-card{background:#1e222d;border-radius:16px;padding:14px;margin:10px}
-.tabs{display:flex;background:#2a2d3a;border-radius:20px;padding:3px;width:220px;margin:0 auto 14px}
-.tab{flex:1;padding:6px;border-radius:18px;border:0;background:transparent;color:#888;font-weight:700}
-.tab.active{background:#3a3d4a;color:#fff}
-.bet-row{display:flex;gap:12px;align-items:center}
-.amount-box{background:#2a2d3a;border-radius:20px;display:flex;align-items:center;padding:6px 10px;gap:10px;flex:1}
-.amount-box button{width:36px;height:36px;border-radius:50%;border:1px solid #555;background:transparent;color:#fff;font-size:20px}
-.amount-box span{font-size:22px;font-weight:900;flex:1;text-align:center}
-.quick{display:flex;gap:8px;margin-top:10px}
-.quick button{background:#2a2d3a;border:0;color:#aaa;padding:8px 14px;border-radius:20px;font-weight:700}
-.btn-bet{flex:1.5;background:#6acf00;color:#fff;border:0;border-radius:12px;padding:14px;font-weight:900;font-size:22px;line-height:1.1;cursor:pointer;box-shadow:0 4px 0 #4a9000}
-.btn-bet small{font-size:14px}
-.btn-cash{flex:1.5;background:#ff3d00;color:#fff;border:0;border-radius:12px;padding:14px;font-weight:900;font-size:20px;display:none;cursor:pointer}
-.dep-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:9999}
-.dep-modal.active{display:flex}
-.dep-box{background:#1e222d;padding:20px;border-radius:16px;width:90%;max-width:360px}
-.dep-box h3{color:#ffcc00;margin-bottom:10px}
-.dep-box input{width:100%;padding:12px;border-radius:8px;border:0;margin:6px 0;background:#2a2d3a;color:#fff}
-.dep-box button{width:100%;padding:12px;border:0;border-radius:8px;font-weight:900;margin-top:8px;cursor:pointer}
-.stk{background:#6acf00;color:#fff}
-.with-btn{position:fixed;right:12px;bottom:120px;background:#ff9800;color:#fff;border:0;padding:10px 14px;border-radius:20px;font-weight:900;z-index:100;cursor:pointer}
+body{margin:0;background:#0a0e1a;color:#fff;font-family:Arial;overflow:hidden}
+#game{height:60vh;background:linear-gradient(#1a2a4a,#0a0e1a);position:relative;display:flex;align-items:center;justify-content:center}
+#plane{font-size:50px;position:absolute;left:10%;bottom:30%;transition:all 0.1s}
+#multi{font-size:70px;font-weight:bold;color:#ffcc00}
+#controls{padding:15px;background:#111827}
+.btn{width:100%;padding:18px;font-size:20px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;margin:5px 0}
+.bet{background:#22c55e;color:#fff}
+.cash{background:#f59e0b;color:#000}
+.dep{background:#3b82f6;color:#fff}
+input{width:100%;padding:15px;border-radius:10px;border:none;font-size:18px;margin:5px 0;background:#1f2937;color:#fff;box-sizing:border-box}
+#modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:100}
+#modalBox{background:#1f2937;padding:20px;border-radius:15px;width:90%;max-width:400px}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo">✈️ FLYBET.CO.KE</div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <div class="balance" id="bal">0.00 KES</div>
-    <button class="btn-join" onclick="openDep()">DEPOSIT</button>
-    <button class="btn-login">LOGIN</button>
+<div id="game">
+  <div id="multi">1.00x</div>
+  <div id="plane">✈️</div>
+</div>
+
+<div id="controls">
+  <div>Balance: <span id="bal">0.00</span> KES | Min Deposit 100</div>
+  <input id="betAmt" type="number" value="100" min="100" placeholder="Min 100">
+  <button class="btn bet" id="betBtn" onclick="placeBet()">BET 100</button>
+  <button class="btn cash" id="cashBtn" onclick="cashOut()" style="display:none">CASHOUT</button>
+  <button class="btn dep" onclick="openDep()">DEPOSIT (Min 100)</button>
+  <div id="status" style="margin-top:10px;color:#22c55e"></div>
+</div>
+
+<div id="modal">
+  <div id="modalBox">
+    <h3>Deposit - Min 100 KES</h3>
+    <input id="depPhone" type="tel" placeholder="07XXXXXXXX">
+    <input id="depAmt" type="number" value="100" min="100" placeholder="Min 100">
+    <button class="btn dep" onclick="doDeposit()">PAY NOW</button>
+    <button class="btn" onclick="closeDep()" style="background:#374151">CLOSE</button>
+    <div id="depStatus"></div>
   </div>
 </div>
 
-<div class="history" id="hist">
-  <span class="blue">1.72x</span><span class="purple">2.38x</span><span class="blue">1.30x</span><span class="blue">1.14x</span><span class="purple">4.59x</span><span class="purple">7.92x</span><span class="blue">1.69x</span>
-</div>
+<script>
+const API="https://crashstats-api.onrender.com";
+let balance=parseFloat(localStorage.getItem('bal')||'0');
+let betting=false, curMult=1, crashPoint=2, gameInterval, inRound=false, betValue=0;
+document.getElementById('bal').innerText=balance.toFixed(2);
 
-<div class="game-area">
-  <div id="multi">1.53x</div>
-  <div id="plane">✈️</div>
-  <div style="position:absolute;bottom:0;left:0;height:14px;background:#ff2040;width:28%;border-radius:0 10px 0 0"></div>
-</div>
-
-<div class="bet-card" id="card1">
-  <div class="tabs"><button class="tab active">Bet</button><button class="tab">Auto</button></div>
-  <div class="bet-row">
-    <div style="flex:1">
-      <div class="amount-box">
-        <button onclick="chg(1,-10)">−</button><span id="amt1">50</span><button onclick="chg(1,10)">+</button>
-      </div>
-      <div class="quick"><button onclick="setAmt(1,100)">100</button><button onclick="setAmt(1,250)">250</button></div>
-      <div class="quick"><button onclick="setAmt(1,1000)">1,000</button><button onclick="setAmt(1,25000)">25,000</button></div>
-    </div>
-    <button class="btn-bet" id="betBtn1" onclick="placeBet(1)">Bet<br><small id="bet
+function placeBet(){
+  if(inRound) return;
+  betValue=parseInt(document.getElementById('betAmt').value);
+  if(betValue<100){alert('Min bet 100');return;}
+  if(betValue>balance){alert('Deposit first - Min 100');openDep();return;}
+  balance-=betValue; localStorage.setItem('bal',balance); document.getElementById('bal').innerText=balance.toFixed(2);
+  betting=true; document.getElementById('betBtn').style.display='none'; document.getElementById('cashBtn').style.display='block';
+  startRound();
+}
+function startRound(){
+  inRound=true; curMult=1; crashPoint=parseFloat((Math.random()*9+1.2).toFixed(2));
+  document.getElementById('status').innerText='Flying... Crash at '+crashPoint+'x';
+  gameInterval=setInterval(()=>{
+    curMult+=0.02; if(curMult>3) curMult+=0.05; if(curMult>5) curMult+=0.1;
+    document.getElementById('multi').innerText=curMult.toFixed(2)+'x';
+    document.getElementById('plane').style.left=(10+curMult*5)+'%';
+    document.getElementById('plane').style.bottom=(30+curMult*3)+'%';
+    if(curMult>=crashPoint){
+      clearInterval(gameInterval); document.getElementById('multi').innerText='CRASHED '+curMult.toFixed(2)+'x'; document.getElementById('multi').style.color='#ef4444';
+      if(betting){ document.getElementById('status').innerText='Crashed! Lost '+betValue; betting=false; }
+      setTimeout(resetRound,3000);
+    }
+  },80);
+}
+function cashOut(){
+  if(!betting||!inRound) return;
+  clearInterval(gameInterval); let win=betValue*curMult; balance+=win; localStorage.setItem('bal',balance);
+  document.getElementById('bal').innerText=balance.toFixed(2); document.getElementById('status').innerText='Won '+win.toFixed(2)+' at '+curMult.toFixed(2)+'x'; betting=false; resetRound();
+}
+function resetRound(){
+  inRound=false; curMult=1; document.getElementById('multi').innerText='1.00x'; document.getElementById('multi').style.color='#ffcc00';
+  document.getElementById('plane').style.left='10%'; document.getElementById('plane').style.bottom='30%';
+  document.getElementById('betBtn').style.display='block'; document.getElementById('cashBtn').style.display='none';
+}
+function openDep(){document.getElementById('modal').style.display='flex';}
+function closeDep(){document.getElementById('modal').style.display='none';}
+async function doDeposit(){
+  let phone=document.getElementById('depPhone').value; let amount=parseInt(document.getElementById('depAmt').value);
+  if(amount<100){alert('Min deposit is 100 KES');return;}
+  if(!phone){alert('Enter phone');return;}
+  document.getElementById('depStatus').innerText='Sending STK to '+phone+'...';
+  try{
+    const res=await fetch(API+'/api/stkpush',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,amount})});
+    const data=await res.json();
+    if(data.success){
+      document.getElementById('depStatus').innerText='STK sent! Check phone to pay Till. After pay, balance will update.';
+      setTimeout(()=>{balance+=amount; localStorage.setItem('bal',balance); document.getElementById('bal').innerText=balance.toFixed(2); closeDep();},2000);
+    }else{
+      document.getElementById('depStatus').innerText='Error: '+(data.error||JSON.stringify(data));
+    }
+  }catch(e){document.getElementById('depStatus').innerText='Failed: '+e.message;}
+}
+setInterval(async()=>{try{let r=await fetch(API+'/'); let j=await r.json(); document.getElementById('status').innerText=j.message||'Live';}catch{}},5000);
+</script>
+</body>
+</html>
