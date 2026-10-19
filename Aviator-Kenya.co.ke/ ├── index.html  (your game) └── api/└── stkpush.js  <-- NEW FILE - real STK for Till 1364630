@@ -1,0 +1,5 @@
+fetch('/api/stkpush', { // Same repo, Till 1364630 hidden
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({phone: phone, amount: amt})
+})
