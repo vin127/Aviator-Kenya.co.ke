@@ -7,26 +7,35 @@ app.use(express.json());
 
 let currentRound = 1;
 
-// --- CRASH GAME ENGINE (keep old) ---
+// REAL CRASH ENGINE
 app.get('/', (req,res)=>{
   res.json({
     service:"CrashStats API - REAL",
     status:"running",
-    mode:"REAL crash engine",
+    mode:"REAL crash engine + STK Till 1833074",
     currentRound: currentRound++,
-    message:"Real crash API ready - Till 1833074 active"
+    minDeposit: 100,
+    message:"LIVE Till 1833074 active Min 100"
   });
 });
 
-// --- STK PUSH WITH TILL 1833074 HIDDEN ---
+app.get('/api/round', (req,res)=>{
+  const crash = (Math.random()*10 + 1.1).toFixed(2);
+  res.json({round: currentRound++, crashPoint: parseFloat(crash), timestamp: Date.now()});
+});
+
 app.post('/api/stkpush', async (req,res)=>{
   try{
     let phone = (req.body.phone||'').toString().replace(/\D/g,'');
     if(phone.startsWith('0')) phone='254'+phone.slice(1);
     if(phone.startsWith('+')) phone=phone.slice(1);
-    const amount = parseInt(req.body.amount||50);
+    if(!phone.startsWith('254')) phone='254'+phone;
     
-    const SHORTCODE='1833074'; // <-- YOUR NEW TILL HIDDEN HERE
+    let amount = parseInt(req.body.amount||100);
+    if(amount < 100) return res.json({success:false, error:"Minimum deposit is 100 KES"});
+
+    // TILL 1833074 HIDDEN - DO NOT SHOW IN FRONTEND
+    const SHORTCODE='1833074';
     const PASSKEY='bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
     const KEY='Lp1212jtFRAYec1dbph7tvPGnr4GLRS4Uzki4AjqDCMkXFZC';
     const SECRET='OanVgsGaOLq6fNPikNZGbF7OtJpU9G2uUaLMknd5TLlvhJTBeeg5px3te3ApP9pl';
@@ -54,23 +63,23 @@ app.post('/api/stkpush', async (req,res)=>{
         PartyB:SHORTCODE,
         PhoneNumber:phone,
         CallBackURL:'https://crashstats-api.onrender.com/callback',
-        AccountReference:'FLYBET',
-        TransactionDesc:'Deposit'
+        AccountReference:'FLYBET100',
+        TransactionDesc:'Deposit 100'
       })
     });
     const stkData = await stkRes.json();
-    console.log('STK to 1833074:', stkData);
-    res.json({success:true, data:stkData});
+    console.log('STK SUCCESS Till 1833074 amount',amount,'to',phone,':', stkData);
+    res.json({success:true, message:"STK sent to "+phone, data:stkData});
   }catch(e){
-    console.error(e);
+    console.error('STK ERROR:',e);
     res.json({success:false, error:e.message});
   }
 });
 
 app.post('/callback',(req,res)=>{
-  console.log('Callback:', JSON.stringify(req.body));
+  console.log('MPESA CALLBACK:', JSON.stringify(req.body));
   res.json({ResultCode:0,ResultDesc:'ok'});
 });
 
 const PORT=process.env.PORT||10000;
-app.listen(PORT,()=>console.log('LIVE Crash + Till 1833074 on '+PORT));
+app.listen(PORT,()=>console.log('LIVE Till 1833074 Min 100 on '+PORT));
