@@ -1,110 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FlyBet Kenya - Aviator</title>
+<title>Aviator Kenya - FlyBet</title>
 <style>
-body{margin:0;background:#0a0e1a;color:#fff;font-family:Arial;overflow:hidden}
-#game{height:60vh;background:linear-gradient(#1a2a4a,#0a0e1a);position:relative;display:flex;align-items:center;justify-content:center}
-#plane{font-size:50px;position:absolute;left:10%;bottom:30%;transition:all 0.1s}
-#multi{font-size:70px;font-weight:bold;color:#ffcc00}
-#controls{padding:15px;background:#111827}
-.btn{width:100%;padding:18px;font-size:20px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;margin:5px 0}
-.bet{background:#22c55e;color:#fff}
-.cash{background:#f59e0b;color:#000}
-.dep{background:#3b82f6;color:#fff}
-input{width:100%;padding:15px;border-radius:10px;border:none;font-size:18px;margin:5px 0;background:#1f2937;color:#fff;box-sizing:border-box}
-#modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:100}
-#modalBox{background:#1f2937;padding:20px;border-radius:15px;width:90%;max-width:400px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0e0e12;color:#fff;font-family:Arial, sans-serif;overflow-x:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#1a1a23;border-bottom:2px solid #ff0040}
+.logo{color:#ff0040;font-weight:bold;font-size:22px}
+.login-area{display:flex;gap:8px;align-items:center}
+.login-area input{padding:8px;border-radius:6px;border:none;background:#2a2a35;color:#fff;width:100px}
+.login-area button{padding:8px 12px;border:none;border-radius:6px;background:#ff0040;color:#fff;font-weight:bold}
+.bal{color:#00ff88;font-weight:bold}
+.history{display:flex;gap:6px;padding:8px;background:#12121a;overflow-x:auto}
+.hist{padding:4px 8px;border-radius:12px;font-size:12px;font-weight:bold;min-width:45px;text-align:center}
+.hist.blue{background:#1e3a8a;color:#60a5fa}
+.hist.purple{background:#581c87;color:#c084fc}
+.hist.pink{background:#831843;color:#f472b6}
+.main{display:flex;flex-direction:column}
+@media(min-width:900px){.main{flex-direction:row}}
+.game-area{flex:1;background:radial-gradient(circle at center,#1a0a1a,#0e0e12);height:55vh;position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #2a2a35}
+#multi{font-size:75px;font-weight:900;color:#fff;z-index:2;text-shadow:0 0 20px #ff0040}
+#plane{font-size:55px;position:absolute;left:15%;bottom:35%;z-index:1;transition:all 0.1s ease}
+#graph{position:absolute;bottom:0;left:0;width:100%;height:70%;opacity:0.3}
+.bets-area{width:100%;background:#1a1a23;padding:10px}
+@media(min-width:900px){.bets-area{width:380px}}
+.bet-box{background:#252530;border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid #333}
+.bet-box input{width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#1a1a23;color:#fff;font-size:16px;margin:5px 0}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;font-size:18px;cursor:pointer;margin-top:5px}
+.btn-bet{background:#22c55e;color:#fff}
+.btn-cash{background:#f59e0b;color:#000}
+.btn-dep{background:#3b82f6;color:#fff}
+.side{padding:10px}
+.side h4{font-size:13px;color:#888;margin-bottom:6px}
+.side-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222;font-size:13px}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;z-index:99}
+#modalBox{background:#252530;padding:20px;border-radius:15px;width:90%;max-width:380px}
+#modalBox input{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:none;background:#1a1a23;color:#fff}
 </style>
 </head>
 <body>
 
-<div id="game">
-  <div id="multi">1.00x</div>
-  <div id="plane">✈️</div>
+<div class="top">
+  <div class="logo">✈️ FLYBET</div>
+  <div class="login-area">
+    <span id="userLabel" style="display:none"></span>
+    <input id="username" placeholder="Username" style="display:block">
+    <button id="loginBtn" onclick="login()">LOGIN</button>
+    <div class="bal">KES <span id="bal">0.00</span></div>
+  </div>
 </div>
 
-<div id="controls">
-  <div>Balance: <span id="bal">0.00</span> KES | Min Deposit 100</div>
-  <input id="betAmt" type="number" value="100" min="100" placeholder="Min 100">
-  <button class="btn bet" id="betBtn" onclick="placeBet()">BET 100</button>
-  <button class="btn cash" id="cashBtn" onclick="cashOut()" style="display:none">CASHOUT</button>
-  <button class="btn dep" onclick="openDep()">DEPOSIT (Min 100)</button>
-  <div id="status" style="margin-top:10px;color:#22c55e"></div>
+<div class="history" id="hist"></div>
+
+<div class="main">
+  <div class="game-area" id="gameArea">
+    <canvas id="graph"></canvas>
+    <div id="multi">1.00x</div>
+    <div id="plane">✈️</div>
+  </div>
+
+  <div class="bets-area">
+    <div class="bet-box">
+      <div style="display:flex;justify-content:space-between"><span>BET 1</span><span style="color:#00ff88">Min 100</span></div>
+      <input id="betAmt" type="number" value="100" min="100">
+      <button class="btn btn-bet" id="betBtn" onclick="placeBet()">BET 100 KES</button>
+      <button class="btn btn-cash" id="cashBtn" onclick="cashOut()" style="display:none">CASHOUT</button>
+      <div id="status" style="margin-top:8px;font-size:13px;color:#22c55e">Login to play - Min 100</div>
+    </div>
+
+    <div class="bet-box">
+      <div>BET 2 (Auto)</div>
+      <input id="betAmt2" type="number" value="200" min="100">
+      <button class="btn btn-bet" style="background:#444" onclick="placeBet2()">BET 2</button>
+    </div>
+
+    <button class="btn btn-dep" onclick="openDep()">DEPOSIT - Min 100 KES</button>
+
+    <div class="side">
+      <h4>LIVE BETS - Other Players</h4>
+      <div id="liveBets"></div>
+    </div>
+  </div>
 </div>
 
 <div id="modal">
   <div id="modalBox">
-    <h3>Deposit - Min 100 KES</h3>
-    <input id="depPhone" type="tel" placeholder="07XXXXXXXX">
-    <input id="depAmt" type="number" value="100" min="100" placeholder="Min 100">
-    <button class="btn dep" onclick="doDeposit()">PAY NOW</button>
-    <button class="btn" onclick="closeDep()" style="background:#374151">CLOSE</button>
-    <div id="depStatus"></div>
+    <h3 style="margin-bottom:10px">Deposit Min 100</h3>
+    <input id="depPhone" placeholder="07XXXXXXXX">
+    <input id="depAmt" type="number" value="100" min="100">
+    <button class="btn btn-dep" onclick="doDeposit()">PAY NOW</button>
+    <button class="btn" style="background:#333" onclick="closeDep()">CLOSE</button>
+    <div id="depStatus" style="margin-top:10px;font-size:13px"></div>
   </div>
 </div>
 
 <script>
 const API="https://crashstats-api.onrender.com";
 let balance=parseFloat(localStorage.getItem('bal')||'0');
+let username=localStorage.getItem('user')||'';
 let betting=false, curMult=1, crashPoint=2, gameInterval, inRound=false, betValue=0;
+let histData=[2.14,1.23,8.45,1.05,3.67,12.3,1.11,2.89];
+
 document.getElementById('bal').innerText=balance.toFixed(2);
+if(username){document.getElementById('userLabel').innerText=username;document.getElementById('userLabel').style.display='block';document.getElementById('username').style.display='none';document.getElementById('loginBtn').innerText='LOGOUT';}
+
+function login(){
+ if(username){localStorage.removeItem('user');location.reload();return;}
+ let u=document.getElementById('username').value; if(!u){alert('Enter username');return;}
+ localStorage.setItem('user',u); username=u; location.reload();
+}
+function renderHist(){
+ let h=document.getElementById('hist'); h.innerHTML='';
+ histData.slice(-20).forEach(v=>{
+  let c=v<2?'blue':v<10?'purple':'pink';
+  h.innerHTML+=`<div class="hist ${c}">${v.toFixed(2)}x</div>`;
+ });
+}
+renderHist();
+
+function genLive(){
+ let names=['Kevin','Brian','Jane','Mike','Faith','John','Mercy','Peter'];
+ let html=''; for(let i=0;i<8;i++){
+  let m=(Math.random()*5+1.1).toFixed(2); let b=Math.floor(Math.random()*900+100);
+  html+=`<div class="side-item"><span>${names[i]}***</span><span>${b} KES</span><span style="color:#00ff88">${m}x</span></div>`;
+ }
+ document.getElementById('liveBets').innerHTML=html;
+}
+genLive(); setInterval(genLive,4000);
 
 function placeBet(){
-  if(inRound) return;
-  betValue=parseInt(document.getElementById('betAmt').value);
-  if(betValue<100){alert('Min bet 100');return;}
-  if(betValue>balance){alert('Deposit first - Min 100');openDep();return;}
-  balance-=betValue; localStorage.setItem('bal',balance); document.getElementById('bal').innerText=balance.toFixed(2);
-  betting=true; document.getElementById('betBtn').style.display='none'; document.getElementById('cashBtn').style.display='block';
-  startRound();
+ if(inRound) return;
+ if(!username){alert('Login first');return;}
+ betValue=parseInt(document.getElementById('betAmt').value);
+ if(betValue<100){alert('Min bet 100');return;}
+ if(betValue>balance){alert('Low balance - Deposit Min 100');openDep();return;}
+ balance-=betValue; localStorage.setItem('bal',balance); document.getElementById('bal').innerText=balance.toFixed(2);
+ betting=true; document.getElementById('betBtn').style.display='none'; document.getElementById('cashBtn').style.display='block';
+ startRound();
 }
+function placeBet2(){document.getElementById('betAmt').value=document.getElementById('betAmt2').value; placeBet();}
 function startRound(){
-  inRound=true; curMult=1; crashPoint=parseFloat((Math.random()*9+1.2).toFixed(2));
-  document.getElementById('status').innerText='Flying... Crash at '+crashPoint+'x';
-  gameInterval=setInterval(()=>{
-    curMult+=0.02; if(curMult>3) curMult+=0.05; if(curMult>5) curMult+=0.1;
-    document.getElementById('multi').innerText=curMult.toFixed(2)+'x';
-    document.getElementById('plane').style.left=(10+curMult*5)+'%';
-    document.getElementById('plane').style.bottom=(30+curMult*3)+'%';
-    if(curMult>=crashPoint){
-      clearInterval(gameInterval); document.getElementById('multi').innerText='CRASHED '+curMult.toFixed(2)+'x'; document.getElementById('multi').style.color='#ef4444';
-      if(betting){ document.getElementById('status').innerText='Crashed! Lost '+betValue; betting=false; }
-      setTimeout(resetRound,3000);
-    }
-  },80);
+ inRound=true; curMult=1; crashPoint=parseFloat((Math.random()*10+1.2).toFixed(2));
+ document.getElementById('status').innerText='Flying to '+crashPoint+'x...';
+ gameInterval=setInterval(()=>{
+  curMult+=0.03; if(curMult>2) curMult+=0.05; if(curMult>5) curMult+=0.12;
+  document.getElementById('multi').innerText=curMult.toFixed(2)+'x';
+  document.getElementById('plane').style.left=(15+curMult*4)+'%';
+  document.getElementById('plane').style.bottom=(35+curMult*3)+'%';
+  document.getElementById('plane').style.transform='rotate('+(curMult*2)+'deg)';
+  if(curMult>=crashPoint){
+   clearInterval(gameInterval); document.getElementById('multi').innerText='CRASH '+curMult.toFixed(2)+'x'; document.getElementById('multi').style.color='#ff0040';
+   histData.push(curMult); renderHist();
+   if(betting){document.getElementById('status').innerText='Crashed! Lost '+betValue; betting=false;}
+   setTimeout(resetRound,2500);
+  }
+ },70);
 }
 function cashOut(){
-  if(!betting||!inRound) return;
-  clearInterval(gameInterval); let win=betValue*curMult; balance+=win; localStorage.setItem('bal',balance);
-  document.getElementById('bal').innerText=balance.toFixed(2); document.getElementById('status').innerText='Won '+win.toFixed(2)+' at '+curMult.toFixed(2)+'x'; betting=false; resetRound();
+ if(!betting||!inRound) return;
+ clearInterval(gameInterval); let win=betValue*curMult; balance+=win; localStorage.setItem('bal',balance);
+ document.getElementById('bal').innerText=balance.toFixed(2); document.getElementById('status').innerText='Cashed '+win.toFixed(2)+' at '+curMult.toFixed(2)+'x'; betting=false; resetRound();
 }
 function resetRound(){
-  inRound=false; curMult=1; document.getElementById('multi').innerText='1.00x'; document.getElementById('multi').style.color='#ffcc00';
-  document.getElementById('plane').style.left='10%'; document.getElementById('plane').style.bottom='30%';
-  document.getElementById('betBtn').style.display='block'; document.getElementById('cashBtn').style.display='none';
+ inRound=false; curMult=1; document.getElementById('multi').innerText='1.00x'; document.getElementById('multi').style.color='#fff';
+ document.getElementById('plane').style.left='15%'; document.getElementById('plane').style.bottom='35%'; document.getElementById('plane').style.transform='rotate(0deg)';
+ document.getElementById('betBtn').style.display='block'; document.getElementById('cashBtn').style.display='none';
 }
 function openDep(){document.getElementById('modal').style.display='flex';}
 function closeDep(){document.getElementById('modal').style.display='none';}
 async function doDeposit(){
-  let phone=document.getElementById('depPhone').value; let amount=parseInt(document.getElementById('depAmt').value);
-  if(amount<100){alert('Min deposit is 100 KES');return;}
-  if(!phone){alert('Enter phone');return;}
-  document.getElementById('depStatus').innerText='Sending STK to '+phone+'...';
-  try{
-    const res=await fetch(API+'/api/stkpush',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,amount})});
-    const data=await res.json();
-    if(data.success){
-      document.getElementById('depStatus').innerText='STK sent! Check phone to pay Till. After pay, balance will update.';
-      setTimeout(()=>{balance+=amount; localStorage.setItem('bal',balance); document.getElementById('bal').innerText=balance.toFixed(2); closeDep();},2000);
-    }else{
-      document.getElementById('depStatus').innerText='Error: '+(data.error||JSON.stringify(data));
-    }
-  }catch(e){document.getElementById('depStatus').innerText='Failed: '+e.message;}
+ let phone=document.getElementById('depPhone').value; let amount=parseInt(document.getElementById('depAmt').value);
+ if(amount<100){alert('Min deposit is 100 KES');return;}
+ if(!phone){alert('Enter phone');return;}
+ document.getElementById('depStatus').innerText='Waking server + sending STK to '+phone+'...';
+ try{
+  // wake first
+  await fetch(API+'/');
+  const res=await fetch(API+'/api/stkpush',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,amount})});
+  const data=await res.json();
+  if(data.success){
+   document.getElementById('depStatus').innerText='STK sent! Check phone - Pay to Till. Balance updates after pay.';
+   setTimeout(()=>{balance+=amount; localStorage.setItem('bal',balance); document.getElementById('bal').innerText=balance.toFixed(2);},3000);
+  }else{
+   document.getElementById('depStatus').innerText='Error: '+(data.error||JSON.stringify(data.data||data));
+  }
+ }catch(e){document.getElementById('depStatus').innerText='Failed: '+e.message+' - Try again, server waking';}
 }
-setInterval(async()=>{try{let r=await fetch(API+'/'); let j=await r.json(); document.getElementById('status').innerText=j.message||'Live';}catch{}},5000);
 </script>
 </body>
 </html>
