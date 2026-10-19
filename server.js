@@ -1,118 +1,38 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');
 const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.use(express.json({ limit: "10kb" }));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-  next();
+// TILL 1364630 HIDDEN HERE
+const CONSUMER_KEY = 'Lp1212jtFRAYec1dbph7tvPGnr4GLRS4Uzki4AjqDCMkXFZC';
+const CONSUMER_SECRET = 'OanVgsGaOLq6fNPikNZGbF7OtJpU9G2uUaLMknd5TLlvhJTBeeg5px3te3ApP9pl';
+const PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
+const SHORTCODE = '1364630';
+
+app.post('/api/stkpush', async (req,res)=>{
+  const {phone, amount} = req.body;
+  let formatted = phone.startsWith('0') ? '254'+phone.slice(1) : phone;
+  try{
+    const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
+    const tokenRes = await fetch('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',{headers:{Authorization:`Basic ${auth}`}});
+    const tokenData = await tokenRes.json();
+    const timestamp = new Date().toISOString().replace(/[^0-9]/g,'').slice(0,14);
+    const password = Buffer.from(SHORTCODE+PASSKEY+timestamp).toString('base64');
+    const stkRes = await fetch('https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest',{
+      method:'POST',
+      headers:{Authorization:`Bearer ${tokenData.access_token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        BusinessShortCode:SHORTCODE,Password:password,Timestamp:timestamp,
+        TransactionType:'CustomerBuyGoodsOnline',Amount:Math.round(amount),
+        PartyA:formatted,PartyB:SHORTCODE,PhoneNumber:formatted,
+        CallBackURL:'https://your-render.onrender.com/callback',
+        AccountReference:'FLYBET',TransactionDesc:'Deposit'
+      })
+    });
+    const data = await stkRes.json();
+    res.json({success:true,data});
+  }catch(e){res.status(500).json({success:false,error:e.message})}
 });
 
-// REAL Crash History - Stored in memory (use DB later)
-let history = [];
-let currentRound = { id: 1, status: "waiting", crashPoint: null, startTime: Date.now() };
-
-function generateCrash() {
-  // Real Aviator math - 97% RTP like real game
-  const r = Math.random();
-  let crash;
-  if (r < 0.05) crash = 1.00 + Math.random() * 0.2; // instant crash 5%
-  else if (r < 0.6) crash = 1.2 + Math.random() * 2; // low 55%
-  else if (r < 0.9) crash = 2 + Math.random() * 5; // mid 30%
-  else crash = 5 + Math.random() * 95; // high 10% - up to 100x
-  
-  return parseFloat(crash.toFixed(2));
-}
-
-function startNewRound() {
-  currentRound = {
-    id: currentRound.id + 1,
-    status: "waiting",
-    crashPoint: generateCrash(),
-    startTime: Date.now(),
-    bets: []
-  };
-  // After 5 sec waiting, start flying
-  setTimeout(() => {
-    currentRound.status = "flying";
-    // After flying until crashPoint, crash
-    // Simulated - frontend will handle animation
-  }, 5000);
-  
-  // Save to history
-  if(history.length > 100) history.pop();
-  history.unshift({ round: currentRound.id - 1, crash: currentRound.crashPoint, time: new Date() });
-}
-
-startNewRound();
-setInterval(startNewRound, 15000); // New round every 15 sec like real Aviator
-
-// ENDPOINTS - REAL ONES
-app.get("/", (req, res) => {
-  res.json({
-    service: "CrashStats API - REAL",
-    status: "running",
-    mode: "REAL crash engine",
-    currentRound: currentRound.id,
-    message: "Real crash API ready"
-  });
-});
-
-app.get("/health", (req, res) => {
-  res.status(200).json({ ok: true });
-});
-
-app.get("/api/history", (req, res) => {
-  res.json(history.slice(0, 50));
-});
-
-app.get("/api/current", (req, res) => {
-  res.json(currentRound);
-});
-
-app.post("/api/bet", (req, res) => {
-  const { amount, autoCashout } = req.body;
-  if(!amount) return res.status(400).json({ error: "amount required" });
-  
-  // TODO: Check real balance from DB + M-Pesa
-  res.json({ 
-    success: true, 
-    roundId: currentRound.id,
-    betId: Date.now(),
-    message: "Bet placed - connect M-Pesa next" 
-  });
-});
-
-app.post("/api/cashout", (req, res) => {
-  const { betId, multiplier } = req.body;
-  res.json({
-    success: true,
-    win: true,
-    multiplier: multiplier,
-    payout: multiplier * 10, // example
-  });
-});
-
-// M-PESA PLACEHOLDER - You will add Daraja here
-app.post("/api/mpesa/deposit", (req, res) => {
-  const { phone, amount } = req.body;
-  res.json({ 
-    success: false, 
-    message: "M-Pesa Daraja not connected yet - need Consumer Key/Secret" 
-  });
-});
-
-app.use((req, res) => {
-  res.status(404).json({ error: "Endpoint not found" });
-});
-
-const PORT = process.env.PORT || 3000;
-if (require.main === module) {
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`REAL CrashStats API listening on port ${PORT}`);
-  });
-}
-
-module.exports = app;
+app.listen(10000,()=>console.log('Till 1364630 server live on Render'));
