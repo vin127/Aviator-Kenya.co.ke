@@ -1,85 +1,83 @@
+// server.js - Aviator Kenya - Daraja Production STK Push
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const axios = require('axios');
 
-app.use(cors({origin:'*'}));
+const app = express();
+app.use(cors());
 app.use(express.json());
 
-let currentRound = 1;
+// ===== DARAJA - READ FROM RENDER ENVIRONMENT =====
+// On Render you must have:
+// MPESA_CONSUMER_KEY, MPESA_CONSUMER_SECRET, MPESA_PASSKEY, MPESA_SHORTCODE=1364630
+const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY;
+const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
+const PASSKEY = process.env.MPESA_PASSKEY;
+const SHORTCODE = process.env.MPESA_SHORTCODE || "1364630";
+const CALLBACK_URL = "https://aviator-kenya-co-ke.onrender.com/mpesa/callback";
 
-// REAL CRASH ENGINE
-app.get('/', (req,res)=>{
+// ===== GAME STATE =====
+let balance = 0;
+let currentRound = 2;
+let deposits = {}; // { checkoutRequestID: { phone, amount, status } }
+
+// ===== HELPERS =====
+function getTimestamp() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return ${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())};
+}
+
+async function getAccessToken() {
+  const auth = Buffer.from(${CONSUMER_KEY}:${CONSUMER_SECRET}).toString('base64');
+  const res = await axios.get('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', {
+    headers: { Authorization: Basic ${auth} }
+  });
+  return res.data.access_token;
+}
+
+// ===== ROUTES =====
+app.get('/', (req, res) => {
   res.json({
-    service:"CrashStats API - REAL",
-    status:"running",
-    mode:"REAL crash engine + STK Till 1833074",
-    currentRound: currentRound++,
+    service: "CrashStats API - REAL",
+    status: "running",
+    mode: REAL crash engine + Daraja STK ${SHORTCODE},
+    currentRound,
     minDeposit: 100,
-    message:"LIVE Till 1833074 active Min 100"
+    message: LIVE Daraja ${SHORTCODE} active Min 100
   });
 });
 
-app.get('/api/round', (req,res)=>{
-  const crash = (Math.random()*10 + 1.1).toFixed(2);
-  res.json({round: currentRound++, crashPoint: parseFloat(crash), timestamp: Date.now()});
-});
+// 1. DEPOSIT - Triggers STK Push
+app.post('/deposit', async (req, res) => {
+  try {
+    let { phone, amount } = req.body;
+    amount = Number(amount);
+    if (!phone || !amount || amount < 100) {
+      return res.status(400).json({ success: false, message: "Min deposit 100, phone required" });
+    }
+    // Format phone: 072... -> 25472...
+    phone = String(phone).replace(/\s/g, '');
+    if (phone.startsWith('0')) phone = '254' + phone.slice(1);
+    if (phone.startsWith('+')) phone = phone.slice(1);
 
-app.post('/api/stkpush', async (req,res)=>{
-  try{
-    let phone = (req.body.phone||'').toString().replace(/\D/g,'');
-    if(phone.startsWith('0')) phone='254'+phone.slice(1);
-    if(phone.startsWith('+')) phone=phone.slice(1);
-    if(!phone.startsWith('254')) phone='254'+phone;
-    
-    let amount = parseInt(req.body.amount||100);
-    if(amount < 100) return res.json({success:false, error:"Minimum deposit is 100 KES"});
+    const timestamp = getTimestamp();
+    const password = Buffer.from(${SHORTCODE}${PASSKEY}${timestamp}).toString('base64');
+    const token = await getAccessToken();
 
-    // TILL 1833074 HIDDEN - DO NOT SHOW IN FRONTEND
-    const SHORTCODE='1833074';
-    const PASSKEY='bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
-    const KEY='Lp1212jtFRAYec1dbph7tvPGnr4GLRS4Uzki4AjqDCMkXFZC';
-    const SECRET='OanVgsGaOLq6fNPikNZGbF7OtJpU9G2uUaLMknd5TLlvhJTBeeg5px3te3ApP9pl';
+    const stkRes = await axios.post('https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
+      BusinessShortCode: SHORTCODE,
+      Password: password,
+      Timestamp: timestamp,
+      TransactionType: "CustomerPayBillOnline",
+      Amount: amount,
+      PartyA: phone,
+      PartyB: SHORTCODE,
+      PhoneNumber: phone,
+      CallBackURL: CALLBACK_URL,
+      AccountReference: "AviatorKE",
+      TransactionDesc: "Aviator Deposit"
+    }, { headers: { Authorization: Bearer ${token} } });
 
-    const auth = Buffer.from(`${KEY}:${SECRET}`).toString('base64');
-    const tRes = await fetch('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',{
-      headers:{Authorization:`Basic ${auth}`}
-    });
-    const tData = await tRes.json();
-    if(!tData.access_token) throw new Error(JSON.stringify(tData));
-    
-    const timestamp = new Date().toISOString().replace(/[^0-9]/g,'').slice(0,14);
-    const password = Buffer.from(SHORTCODE+PASSKEY+timestamp).toString('base64');
-    
-    const stkRes = await fetch('https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest',{
-      method:'POST',
-      headers:{Authorization:`Bearer ${tData.access_token}`,'Content-Type':'application/json'},
-      body:JSON.stringify({
-        BusinessShortCode:SHORTCODE,
-        Password:password,
-        Timestamp:timestamp,
-        TransactionType:'CustomerBuyGoodsOnline',
-        Amount:amount,
-        PartyA:phone,
-        PartyB:SHORTCODE,
-        PhoneNumber:phone,
-        CallBackURL:'https://crashstats-api.onrender.com/callback',
-        AccountReference:'FLYBET100',
-        TransactionDesc:'Deposit 100'
-      })
-    });
-    const stkData = await stkRes.json();
-    console.log('STK SUCCESS Till 1833074 amount',amount,'to',phone,':', stkData);
-    res.json({success:true, message:"STK sent to "+phone, data:stkData});
-  }catch(e){
-    console.error('STK ERROR:',e);
-    res.json({success:false, error:e.message});
-  }
-});
-
-app.post('/callback',(req,res)=>{
-  console.log('MPESA CALLBACK:', JSON.stringify(req.body));
-  res.json({ResultCode:0,ResultDesc:'ok'});
-});
-
-const PORT=process.env.PORT||10000;
-app.listen(PORT,()=>console.log('LIVE Till 1833074 Min 100 on '+PORT));
+    const checkoutID = stkRes.data.CheckoutRequestID;
+    deposits[checkoutID] = { phone, amount, status: "PENDING" };
