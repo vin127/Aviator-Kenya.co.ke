@@ -69,7 +69,7 @@ app.post('/deposit', async (req, res) => {
       BusinessShortCode: SHORTCODE,
       Password: password,
       Timestamp: timestamp,
-      TransactionType: "CustomerPayBillOnline",
+      TransactionType: "CustomerBuyGoodsOnline",
       Amount: amount,
       PartyA: phone,
       PartyB: SHORTCODE,
