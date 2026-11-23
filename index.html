@@ -1,69 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FlyBet Aviator - Kenya | Till 1833074</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aviator Kenya - CrashStats</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#FFC107;font-family:Arial,sans-serif}
-.top{background:#000;color:#FFC107;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
-.top span:last-child{background:#FFC107;color:#000;padding:6px 15px;border-radius:20px}
-.card{background:#fff;margin:15px;border-radius:16px;padding:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.card h1{font-size:28px;margin:10px 0}
-.plane{font-size:80px}
-.stats{display:flex;justify-content:space-around;margin:15px 0}
-.stat b{display:block;font-size:20px;color:#000}
-.stat small{color:#666}
-.btn-yellow{background:#FFC107;color:#000;border:none;width:100%;padding:16px;border-radius:30px;font-size:18px;font-weight:bold;margin:10px 0}
-.btn-black{background:#000;color:#FFC107;border:none;width:100%;padding:16px;border-radius:30px;font-size:18px;font-weight:bold}
-.deposit-wrap{background:#111;color:#fff;margin:15px;border-radius:16px;padding:20px;text-align:center}
-.deposit-wrap input{width:100%;padding:15px;border-radius:10px;border:none;text-align:center;font-size:18px;margin:12px 0}
-.till{color:#FFC107;font-weight:bold;font-size:14px;margin-top:8px}
+body{background:#0b0e1a;color:#fff;font-family:Arial;text-align:center;margin:0;padding:10px}
+h1{color:#facc15;font-size:22px}
+.card{background:#1a1f3a;padding:15px;border-radius:12px;margin:10px 0}
+input{width:90%;padding:12px;margin:6px 0;border-radius:8px;border:none;font-size:16px}
+button{width:95%;padding:14px;border:none;border-radius:8px;font-size:17px;font-weight:bold;cursor:pointer}
+.dep{background:#22c55e;color:#fff}
+.with{background:#ef4444;color:#fff;margin-top:8px}
+.bet{background:#facc15;color:#000;margin-top:8px}
+#msg{color:#facc15;margin-top:10px;min-height:20px}
+#crash{font-size:48px;color:#22c55e;font-weight:bold;margin:10px}
+.small{font-size:13px;color:#aaa}
 </style>
 </head>
 <body>
-<div class="top"><span>✈️ FLY BET</span><span>LIVE</span></div>
+
+<h1>✈️ Aviator Kenya</h1>
+<div class="small">Store Number: 1364630 - Instant STK Push</div>
 
 <div class="card">
-<div class="plane">✈️</div>
-<h1>AVIATOR</h1>
-<p>Fly High, Win Big - Kenya's #1 Crash Game</p>
-<div class="stats">
-<div class="stat"><b>1.5M+</b><small>Players</small></div>
-<div class="stat"><b>500x</b><small>Max Win</small></div>
-<div class="stat"><b>24/7</b><small>Live</small></div>
-</div>
-<button class="btn-yellow" onclick="document.getElementById('dep').scrollIntoView()">PLAY AVIATOR NOW</button>
+<div id="crash">1.00x</div>
+<div>Balance: <b id="bal">0 KES</b></div>
+<div class="small">Min Deposit 100 KES | Min Bet 10 KES</div>
 </div>
 
-<div class="deposit-wrap" id="dep">
-<h3>💳 DEPOSIT - TILL 1833074</h3>
-<p style="color:#aaa;font-size:13px">M-Pesa Buy Goods - Instant</p>
-<input type="tel" id="phone" placeholder="2547XXXXXXXX">
-<input type="number" id="amt" placeholder="Amount" value="100">
-<button class="btn-yellow" onclick="doDeposit()">DEPOSIT TO TILL 1833074</button>
-<p class="till">Till Number: 1833074 - Buy Goods</p>
-<p id="msg" style="margin-top:12px;color:#FFC107"></p>
+<div class="card">
+<h3>DEPOSIT - M-PESA STK</h3>
+<input id="phone" placeholder="Phone e.g 0722123456" type="tel">
+<input id="depAmt" placeholder="Amount e.g 100" type="number" value="100">
+<button class="dep" onclick="doDeposit()">DEPOSIT VIA M-PESA</button>
+<div id="msg"></div>
+</div>
+
+<div class="card">
+<h3>PLAY</h3>
+<input id="betAmt" placeholder="Bet Amount e.g 50" type="number" value="50">
+<button class="bet" onclick="placeBet()">PLACE BET</button>
+<button class="with" onclick="doWithdraw()">WITHDRAW</button>
+<div class="small">Withdraw to your M-Pesa number</div>
 </div>
 
 <script>
-async function doDeposit(){
- const phone=document.getElementById('phone').value.trim();
- const amount=document.getElementById('amt').value.trim();
- if(!phone.startsWith('254')){alert('Use 2547... format');return}
- document.getElementById('msg').innerText='Sending STK to '+phone+'... Till 1833074';
- try{
-  const r=await fetch('https://crashstats-api.onrender.com/api/stkpush',{
-   method:'POST',headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({phone:phone,amount:amount})
-  });
-  const d=await r.json();
-  document.getElementById('msg').innerText=d.message||'Check phone: Buy goods 1833074';
- }catch(e){
-  document.getElementById('msg').innerText='Error - Check Render API is Live';
- }
+const API = "https://aviator-kenya-co-ke.onrender.com";
+
+async function refreshBal(){
+  try{
+    const r = await fetch(API + "/balance");
+    const d = await r.json();
+    document.getElementById('bal').innerText = d.balance + " KES";
+  }catch(e){}
 }
-</script>
-</body>
-</html>
+refreshBal();
+setInterval(refreshBal, 5000);
+
+// ===== DEPOSIT - DARAJA STORE 1364630 =====
+async function doDeposit(){
+  const phone = document.getElementById('phone').value.trim();
+  const amount = document.getElementById('depAmt').value;
+  if(!phone || !amount || amount < 100){
+    document.getElementById('msg').innerText = 'Enter phone and min 100';
+    return;
+  }
+  document.getElementById('msg').innerText = 'Sending STK to ' + phone + '... Store 1364630';
+  try{
+    const r = await fetch(API + '/deposit', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ phone, amount: Number(amount) })
+    });
+    const d = await r.json();
+    if(d.success){
+      document.getElementById('msg').innerText = 'Check phone: Buy goods Store 1364630 - Enter PIN';
+      // Poll for payment
+      let tries = 0;
+      const timer = setInterval(async () => {
+        tries++;
+        const s = await fetch(API + '/deposit-status/' + d.CheckoutRequestID);
+        const sd = await s.json();
+        if(sd.status === 'PAID'){
+          document.getElementById('msg').innerText = 'PAID! Balance updated';
+          clearInterval(timer);
+          refreshBal();
+        }
+        if(sd.status === 'FAILED' || tries >
