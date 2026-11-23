@@ -102,5 +102,51 @@ async function deposit(){
   btn.textContent = 'DEPOSIT VIA M-PESA';
 }
 </script>
-</body>
+</body>function setAmount(value) {
+    document.getElementById("amount").value = value;
+}
+
+document.getElementById("depositForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const phone = document.getElementById("phone").value;
+    const amount = Number(document.getElementById("amount").value);
+    const btn = document.getElementById("depositBtn");
+    const message = document.getElementById("depositMessage");
+
+    if (amount < 100) {
+        message.textContent = "Minimum deposit is KES 100.";
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "PROCESSING...";
+    message.textContent = "Sending STK Push request...";
+
+    try {
+        const response = await fetch("/api/deposit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                phone: phone,
+                amount: amount
+            })
+        });
+
+        const result = await response.json();
+
+        message.textContent = result.message ||
+            (result.success
+                ? "STK Push sent. Check your phone."
+                : "Deposit request failed.");
+
+    } catch (error) {
+        message.textContent = "Connection error. Please try again.";
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "DEPOSIT VIA M-PESA";
+    }
+});
 </html>
