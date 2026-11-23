@@ -1,69 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FlyBet Aviator - Kenya | Till 1833074</title>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVIATOR - Fly High, Win Big</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#FFC107;font-family:Arial,sans-serif}
-.top{background:#000;color:#FFC107;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
-.top span:last-child{background:#FFC107;color:#000;padding:6px 15px;border-radius:20px}
-.card{background:#fff;margin:15px;border-radius:16px;padding:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.card h1{font-size:28px;margin:10px 0}
-.plane{font-size:80px}
-.stats{display:flex;justify-content:space-around;margin:15px 0}
-.stat b{display:block;font-size:20px;color:#000}
-.stat small{color:#666}
-.btn-yellow{background:#FFC107;color:#000;border:none;width:100%;padding:16px;border-radius:30px;font-size:18px;font-weight:bold;margin:10px 0}
-.btn-black{background:#000;color:#FFC107;border:none;width:100%;padding:16px;border-radius:30px;font-size:18px;font-weight:bold}
-.deposit-wrap{background:#111;color:#fff;margin:15px;border-radius:16px;padding:20px;text-align:center}
-.deposit-wrap input{width:100%;padding:15px;border-radius:10px;border:none;text-align:center;font-size:18px;margin:12px 0}
-.till{color:#FFC107;font-weight:bold;font-size:14px;margin-top:8px}
-</style>
-</head>
-<body>
-<div class="top"><span>✈️ FLY BET</span><span>LIVE</span></div>
+*{box-sizing:border-box;font-family:Arial,sans-serif}body{margin:0;background:#facc15;padding:12px}
+.card{background:#fff;border-radius:20px;padding:20px;text-align:center}
+h1{font-size:42px;margin:10px 0 0} .sub{font-size:19px}
+.stats{display:flex;justify-content:space-around;margin:18px 0}.stats b{font-size:28px}.stats span{color:#666}
+.btn{background:#facc15;border:none;padding:16px;border-radius:30px;font-weight:900;font-size:22px;width:100%;cursor:pointer}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.top b{font-size:18px}.top button{background:#111;color:#facc15;border:none;padding:10px 16px;border-radius:20px;font-weight:800}
+.auth{background:#111;color:#fff;border-radius:20px;padding:16px;margin-bottom:12px;display:none}
+.auth input{width:100%;padding:13px;border-radius:12px;border:none;margin:6px 0;text-align:center;font-size:17px}
+.auth .row{display:flex;gap:8px}.auth .row button{flex:1}
+.game{background:#111;color:#fff;border-radius:20px;padding:16px;margin-top:12px;text-align:center}
+#plane{font-size:55px}#mult{font-size:48px;font-weight:900;color:#facc15}
+.bets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.bet{background:#222;border-radius:16px;padding:12px}.bet input{width:100%;padding:12px;border-radius:10px;border:none;text-align:center;font-size:20px;margin:6px 0}
+.bet button{width:100%;padding:13px;border:none;border-radius:20px;font-weight:900;font-size:17px;cursor:pointer}
+.b1{background:#facc15}.b2{background:#22c55e;color:#fff}.cash{background:#ef4444;color:#fff}
+.dep{background:#111;color:#fff;border-radius:20px;padding:16px;margin-top:12px;text-align:center}
+.dep input{width:100%;padding:14px;border-radius:12px;border:none;margin:7px 0;text-align:center;font-size:20px}
+.note{color:#facc15;font-weight:700;margin-top:8px}
+</style></head><body>
+
+<div class="top"><b>✈️ AVIATOR</b><div><span id="userTxt"></span> <button onclick="showAuth()">Login / Register</button></div></div>
+<div style="text-align:center;font-weight:900;margin-bottom:8px">Balance: <span id="bal">0.00</span> KES</div>
+
+<div id="authBox" class="auth">
+<b>Login / Register - Password min 4</b>
+<input id="rUser" placeholder="Username">
+<input id="rPhone" placeholder="+254712345678">
+<input id="rPass" type="password" placeholder="Password (min 4)">
+<div class="row"><button class="btn" onclick="register()">REGISTER</button><button class="btn" style="background:#fff" onclick="login()">LOGIN</button></div>
+<p id="authMsg" style="text-align:center"></p>
+</div>
 
 <div class="card">
-<div class="plane">✈️</div>
-<h1>AVIATOR</h1>
-<p>Fly High, Win Big - Kenya's #1 Crash Game</p>
-<div class="stats">
-<div class="stat"><b>1.5M+</b><small>Players</small></div>
-<div class="stat"><b>500x</b><small>Max Win</small></div>
-<div class="stat"><b>24/7</b><small>Live</small></div>
-</div>
-<button class="btn-yellow" onclick="document.getElementById('dep').scrollIntoView()">PLAY AVIATOR NOW</button>
+<div style="font-size:70px">✈️</div><h1>AVIATOR</h1>
+<p class="sub">Fly High, Win Big - Kenya's #1 Crash Game</p>
+<div class="stats"><div><b>1.5M+</b><br><span>Players</span></div><div><b>500x</b><br><span>Max Win</span></div><div><b>24/7</b><br><span>Live</span></div></div>
+<button class="btn" onclick="document.getElementById('game').scrollIntoView({behavior:'smooth'})">PLAY AVIATOR NOW</button>
 </div>
 
-<div class="deposit-wrap" id="dep">
-<h3>💳 DEPOSIT - TILL 1833074</h3>
-<p style="color:#aaa;font-size:13px">M-Pesa Buy Goods - Instant</p>
-<input type="tel" id="phone" placeholder="2547XXXXXXXX">
-<input type="number" id="amt" placeholder="Amount" value="100">
-<button class="btn-yellow" onclick="doDeposit()">DEPOSIT TO TILL 1833074</button>
-<p class="till">Till Number: 1833074 - Buy Goods</p>
-<p id="msg" style="margin-top:12px;color:#FFC107"></p>
+<div class="game" id="game">
+<div id="plane">✈️</div><div id="mult">1.00x</div><div id="status">Waiting for next round...</div>
+<div class="bets">
+<div class="bet"><b>BET 1</b><input id="bet1" type="number" value="50" min="50"><button class="b1" id="btn1" onclick="placeBet(1)">BET 50 - Min 50</button><div id="win1"></div></div>
+<div class="bet"><b>BET 2</b><input id="bet2" type="number" value="50" min="50"><button class="b2" id="btn2" onclick="placeBet(2)">BET 50 - Min 50</button><div id="win2"></div></div>
+</div>
+</div>
+
+<div class="dep">
+<h2 style="margin:0">💳 DEPOSIT</h2><p style="color:#aaa">M-Pesa - Secure & Instant</p>
+<input id="dPhone" placeholder="2547XXXXXXXX">
+<input id="dAmt" type="number" value="100" min="50" placeholder="Amount min 50">
+<button class="btn" onclick="deposit()">DEPOSIT NOW</button>
+<p class="note">1. Amount min 50 &nbsp; 2. Phone +254... &nbsp; 3. DEPOSIT NOW &nbsp; 4. Enter M-Pesa PIN &nbsp; 5. Balance updates</p>
+<p id="depMsg"></p>
 </div>
 
 <script>
-async function doDeposit(){
- const phone=document.getElementById('phone').value.trim();
- const amount=document.getElementById('amt').value.trim();
- if(!phone.startsWith('254')){alert('Use 2547... format');return}
- document.getElementById('msg').innerText='Sending STK to '+phone+'... Till 1833074';
- try{
-  const r=await fetch('https://crashstats-api.onrender.com/api/stkpush',{
-   method:'POST',headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({phone:phone,amount:amount})
-  });
-  const d=await r.json();
-  document.getElementById('msg').innerText=d.message||'Check phone: Buy goods 1833074';
- }catch(e){
-  document.getElementById('msg').innerText='Error - Check Render API is Live';
- }
-}
-</script>
-</body>
-</html>
+let token=localStorage.getItem('token')||'', balance=0, mult=1, flying=false, crash=0, bets={1:null,2:null};
+function upd(){document.getElementById('bal').textContent=balance.toFixed(2)}
+async function api(u,b){let r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(b)});return r.json()}
+function showAuth(){document.getElementById('authBox').style.display=document.getElementById('authBox').style.display==='block'?'none':'block'}
+async function register(){let u=document.getElementById('rUser').value,p=document.getElementById('rPhone').value,pw=document.getElementById('rPass').value;if(pw.length<4)return alert('Password must be at least 4');let d=await api('/api/register',{username:u,phone:p,password:pw});if(d.error)return alert(d.error);token=d.token;localStorage.setItem('token',token);balance=d.balance;upd();document.getElementById('userTxt').textContent=d.username;alert('Welcome '+d.username)}
+async function login(){let p=document.getElementById('rPhone').value,pw=document.getElementById('rPass').value;let d=await api('/api/login',{phone:p,password:pw});if(d.error)return alert(d.error);token=d.token;localStorage.setItem('token',token);balance=d.balance;upd();document.getElementById('userTxt').textContent=d.username;alert('Welcome back '+d.username)}
+async function deposit(){if(!token)return alert('Login first');let amt=parseInt(document.getElementById('dAmt').value),ph=document.getElementById('dPhone').value;if(amt<50)return alert('Min deposit 50');let d=await api('/api/deposit',{amount:amt,phone:ph});if(d.error)return alert(d.error);document.getElementById('depMsg').textContent='Check your phone, enter M-Pesa PIN';setTimeout(refresh,15000)}
+async function refresh(){if(!token)return;let r=await fetch('/api/me',{headers:{Authorization:'Bearer '+token}});let d=await r.json();if(d.balance!==undefined){balance=d.balance;upd()}}
+function placeBet(n){if(flying)return alert('Round in progress');let amt=parseInt(document.getElementById('bet'+n).value);if(amt<50)return alert('Min stake is 50 on both sides');if(amt>balance)return alert('Low balance, deposit first');if(!token)return alert('Login first');balance-=amt;upd();bets[n]={amt};document.getElementById('btn'+n).textContent='CASHOUT';document.getElementById('btn'+n).className='cash';document.getElementById('btn'+n).onclick=()=>cashout(n)}
+function cashout(n){if(!bets[n]||!flying)return;let win=Math.floor(bets[n].amt*mult);balance+=win;upd();document.getElementById('win'+n).textContent='Won '+win+' KES @ '+mult.toFixed(2)+'x';bets[n]=null;let b=document.getElementById('btn'+n);b.textContent='BET '+document.getElementById('bet'+n).value+' - Min 50';b.className=n==1?'b1':'b2';b.onclick=()=>placeBet(n)}
+function round(){flying=true;mult=1;crash=(
